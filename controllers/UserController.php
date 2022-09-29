@@ -2,8 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\Cliente;
+use app\models\Restaurante;
 use app\models\User;
 use app\models\search\UserSearch;
+use mysqli;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -23,7 +27,7 @@ class UserController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
+               /* 'access' => [
                     'class' => AccessControl::className(),
                     'rules' => [
                     [
@@ -31,7 +35,7 @@ class UserController extends Controller
                         'roles' => ['@']
                     ]
                     ],
-                ],
+                ],*/
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -80,9 +84,72 @@ class UserController extends Controller
     {
         $model = new User();
 
+        setlocale(LC_ALL,"es_CO");
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->encriptarPassword($model->password);
+                if($model->save()){
+                    if($model->tipo=='0'){
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }elseif($model->tipo=='1'){
+                        $restaurante = new Restaurante();
+                        $restaurante->nit=0;
+                        $restaurante->nombre='';
+                        $restaurante->telefono=0;
+                        $restaurante->celular=0;
+                        $restaurante->email=$model->email;
+                        $restaurante->encargado='';
+                        $restaurante->direccion='';
+                        $restaurante->ciudad='';
+                        $restaurante->total_mesas=0;
+                        $restaurante->mensualidad=0;
+                        $restaurante->codigo_de_activacion=0;
+                        $restaurante->activado=0;
+                        $restaurante->usuario_id=$model->id;
+                        $restaurante->fecha=date('Y-m-d');
+                        $restaurante->hora=date('H:i:s');
+                        
+                        if ($restaurante->save(false)) {   
+                            /*$conexion = new mysqli("localhost", "MeseroAdmin", "MeseroAdmin2022$", "mesero_virtual");
+                            if ($conexion->connect_errno) {
+                                echo "Falló la conexión con MySQL: (" . $conexion->connect_errno . ") " . $conexion->connect_error;
+                                exit();
+                            }
+                            $idRestaurante = htmlentities($restaurante->id,ENT_QUOTES,'utf-8');
+                            $consulta="CREATE TABLE `restaurante#{$idRestaurante}` (
+                                `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                `grupo` CHAR(52) NOT NULL,
+                                `nombre` CHAR(52) NOT NULL,
+                                `descripcion` CHAR(52) NOT NULL,
+                                `precio` INT(11) NOT NULL DEFAULT '0',
+                                `fecha` date NOT NULL,
+                                `hora` CHAR(52) NOT NULL
+                              ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+                            if ($resultado = mysqli_query($conexion, $consulta))
+                            {}
+                            mysqli_close($conexion);*/
+                            
+
+                            $model->login();
+                            return $this->redirect(['restaurante/update', 'id' => $restaurante->id]);
+                        }
+                    }elseif ($model->tipo=='2'){
+                        $cliente = new Cliente();
+                        $cliente->nombre = '';
+                        $cliente->saldo = 0;
+                        $cliente->fecha=date('Y-m-d');
+                        $cliente->hora=date('H:i:s');
+                        $cliente->usuario_id=$model->id;
+                        if ($cliente->save(false)) {   
+                            $model->login();
+                            return $this->redirect(['cliente/update', 'id' => $cliente->id]);
+                        }
+                    }
+
+                }
+                $model->password='';
             }
         } else {
             $model->loadDefaultValues();
@@ -122,6 +189,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
+        Restaurante::findOne(['usuario_id' => $id])->delete();
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

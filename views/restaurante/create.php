@@ -4,8 +4,9 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\Restaurante $model */
-
-$this->title = 'Create Restaurante';
+if(Yii::$app->user->isGuest){
+    $this->title = 'Create Restaurante';
+}
 $this->params['breadcrumbs'][] = ['label' => 'Restaurantes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

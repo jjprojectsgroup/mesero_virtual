@@ -10,20 +10,29 @@ use yii\widgets\ActiveForm;
 
 <div class="cliente-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin([
+   'fieldConfig' => [
+      'errorOptions' => [
+           'encode' => false,
+           'class' => 'help-block',
+           'style'=>'color:red;',
+       ],
+   ],
+]);?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'saldo')->textInput() ?>
+    <!--<?= $form->field($model, 'saldo')->textInput() ?>
 
     <?= $form->field($model, 'fecha')->textInput() ?>
 
     <?= $form->field($model, 'hora')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'usuario_id')->textInput() ?>
+    <?= $form->field($model, 'usuario_id')->textInput() ?>-->
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <p></p>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

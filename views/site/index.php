@@ -6,10 +6,9 @@ $this->title = 'Mesero Virtual';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent">
+    <div class="jumbotron text-center bg-transparent" align="center">
         <h1 class="display-4"  >Mesero Virtual</h1>
-        <img  src="img/logo.png" style="padding: 0px;">
-        
+    <img src="img/logo.png">
     </div>
 
     <div class="body-content">

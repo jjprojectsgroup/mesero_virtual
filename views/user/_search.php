@@ -19,11 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username') ?>
 
-    <?= $form->field($model, 'password') ?>
+   <!-- <?= $form->field($model, 'password') ?>
 
     <?= $form->field($model, 'auth_key') ?>
 
-    <?= $form->field($model, 'access_token') ?>
+    <?= $form->field($model, 'access_token') ?> -->
 
     <?php // echo $form->field($model, 'tipo') ?>
 

@@ -45,12 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'usuario_id',
             //'fecha',
             //'hora',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Restaurante $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],
+
         ],
     ]); ?>
 

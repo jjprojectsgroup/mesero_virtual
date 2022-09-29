@@ -4,6 +4,8 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
+use app\models\Cliente;
+use app\models\Restaurante;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -18,6 +20,23 @@ $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, 
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@web/favicon.ico']);
+$usuario=null;
+if(!Yii::$app->user->isGuest){
+    $tipo = Yii::$app->user->identity->tipo;
+    $ruta='';
+    $id=Yii::$app->user->identity->id;
+    if($tipo=='0'){
+        $ruta='/user/update';
+    }elseif($tipo=='1'){
+        $usuario = Restaurante::findOne(['usuario_id' => $id]);
+        $id=$usuario->id;
+        $ruta='/restaurante/update';
+    }elseif($tipo=='2'){
+        $usuario = Cliente::findOne(['usuario_id' => $id]);
+        $id=$usuario->id;
+        $ruta='/cliente/update';
+    }
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -31,6 +50,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
 
 <header id="header">
     <?php
+    if(!yii::$app->user->isGuest){
+      $restaurante =  Restaurante::findOne(['usuario_id' => $id]);
+    }
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
@@ -41,35 +63,52 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            (!Yii::$app->user->isGuest)?(
+            (!Yii::$app->user->isGuest && $tipo=='0')?(
             ['label' => 'Usuarios', 'url' => ['/user/index']]
             ):(""),
-            (!Yii::$app->user->isGuest)?(
+            (!Yii::$app->user->isGuest && $tipo=='0')?(
             ['label' => 'Restaurantes', 'url' => ['/restaurante/index']]
             ):(""),
-            (!Yii::$app->user->isGuest)?(
-            ['label' => 'clientes', 'url' => ['/cliente/index']]
+            (!Yii::$app->user->isGuest && $tipo=='0')?(
+            ['label' => 'Clientes', 'url' => ['/cliente/index']]
             ):(""),
-            ['label' => 'About', 'url' => ['/site/about']],
-
+            (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
+                ['label' => 'Menu', 'url' => ['/menu/index']]
+            ):(""),
+            (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
+                ['label' => 'Pedido', 'url' => ['/pedido/index']]
+            ):(""),
+            (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
+                ['label' => 'Item Pedido', 'url' => ['/pedido-item/index']]
+            ):(""),
+            (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
+                ['label' => 'Pedido Cliente', 'url' => ['/pedido-item/menu']]
+            ):(""),
+          //  ['label' => 'About', 'url' => ['/site/about']],
         ]
     ]);
     echo '</div>';
-    echo '<div  style="align: left" >';
+    echo '<div   >';
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav','style' => 'display: flex; justify-content: center; float: none;' ],
+        'options' => ['class' => 'navbar-nav' ],
         'items' => [
+            (!Yii::$app->user->isGuest)?(                
+                ['label' => 'Perfil', 'url' => [$ruta, 'id' => $id]]
+                ):(""),
             Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login'],'style' => 'padding-right: 10px']
+                ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->username . ')',
-                        ['class' => 'nav-link btn btn-link logout', 'style' => 'text-aling: right']
+                        $usuario->nombre!=null?'Cerrar Sesion ('.$usuario->nombre.')':'Cerrar Sesion (' .Yii::$app->user->identity->email . ')',
+                        ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
-                    . '</li>'
-        ]
+                    . '</li>',
+            (Yii::$app->user->isGuest)?(                
+                ['label' => 'Registro', 'url' => ['/user/create']]
+                ):("")    
+                ]
     ]);
     echo '</div>';
     NavBar::end();

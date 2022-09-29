@@ -10,7 +10,7 @@ use yii\web\IdentityInterface;
  * This is the model class for table "user".
  *
  * @property int $id
- * @property string $username
+ * @property string $email
  * @property string $password
  * @property string $auth_key
  * @property string $access_token
@@ -21,6 +21,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $rememberMe = true;
+    private $_user = false;
+
     /**
      * {@inheritdoc}
      */
@@ -35,10 +38,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'auth_key', 'access_token', 'tipo'], 'required'],
-            [['username'], 'string', 'max' => 250],
+            [['email', 'password', 'auth_key', 'access_token', 'tipo'], 'required'],
+            [['email'], 'string', 'max' => 250],
             [['password', 'auth_key', 'access_token'], 'string', 'max' => 500],
             [['tipo'], 'string', 'max' => 10],
+            [['email'], 'unique'],
         ];
     }
 
@@ -49,7 +53,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
+            'email' => 'Email',
             'password' => 'Password',
             'auth_key' => 'Auth Key',
             'access_token' => 'Access Token',
@@ -88,9 +92,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     
     ////////////////////////////
-    public static function findByUsername($username)
+    public static function findByUsername($email)
     {
-      return static::find()->where(['username' => $username])->one();
+      return static::find()->where(['email' => $email])->one();
     }
 
         /**
@@ -132,7 +136,9 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return \Yii::$app->security->validatePassword($password, $this->password);
+
+       // return $this->password === $password;
     }
 
     
@@ -161,4 +167,41 @@ class User extends ActiveRecord implements IdentityInterface
   {
     return static::findOne(['access_token' => $token]);
   }
+
+  public function generateKey()
+  {
+    $this->auth_key = \Yii::$app->security->generateRandomString();
+    $this->access_token = \Yii::$app->security->generateRandomString();
+  }
+
+      /**
+     * Logs in a user using the provided username and password.
+     * @return bool whether the user is logged in successfully
+     */
+    public function login()
+    {
+        if ($this->validate()) {
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        }
+        return false;
+    }
+    
+    /**
+     * Finds user by [[username]]
+     *
+     * @return User|null
+     */
+    public function getUser()
+    {
+        if ($this->_user === false) {
+            $this->_user = User::findByUsername($this->email);
+        }
+
+        return $this->_user;
+    }
+
+    public function encriptarPassword($password)
+    {
+      $this->password = \Yii::$app->security->generatePasswordHash($password);
+    }
 }

@@ -81,8 +81,15 @@ class ClienteController extends Controller
         $model = new Cliente();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->fecha=date('Y-m-d');
+                $model->hora=date('H:i:s');
+                $model->saldo=0;
+                if($model->save()){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }else{
+            $model->loadDefaultValues();
             }
         } else {
             $model->loadDefaultValues();

@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'name' => 'Mesero Virtual',
     'homeUrl' => 'Home',
+    'timezone' => 'America/Bogota',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
