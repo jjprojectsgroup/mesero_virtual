@@ -15,34 +15,34 @@ $mesaId = Yii::$app->cache->get('mesaId');
 
 
 // $data está disponible aquí
+
 ?>
+
 <form action="form.php" method="post" id="form">
   <div class="menu-form" ALIGN="center">
   <br/>
     <h1><?= Html::encode($this->title) ?></h1>
     <p></p>
-    <ul>
-      <table id="tablaMenu" class="columns">
+
+    <div ALIGN="center" class="container">
+    <div class="row">
+    <div class="col">
+    <table id="tablaMenu" class="table align-middle">
         <TR>
-          <th style="padding-left: 20px;"> Producto</th>
-          <th style="width:100px;padding-left: 20px;"> Cantidad</th>
-          <th style="padding-left: 30px;"> Precio</th>
-          <th style="padding-left: 30px;"> Total</th>
+          <th style=" width:25%;" > Producto</th>
+          <th style=" width:15%;"> Cantidad</th>
+          <th style=" width:15%;"> Precio</th>
+          <th > Total</th>
         </TR>
         <?php foreach ($model as $key => $dato) { ?>
           <TR>
-            <td>&nbsp;&nbsp;&nbsp; <?php echo Html::encode($dato->nombre) ?></td>
-            <td>&nbsp;&nbsp;&nbsp; <?php echo Html::input('NUMBER', null, 0, ['id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ')', 'min' => 0, 'onkeypress' => 'return validarClic(event)']); echo Html::label($dato->id,null,['id'=>'id' . $key, 'style'=>'display:none'])?></td>
-            <td>&nbsp;&nbsp;&nbsp; <?= Html::label($dato->precio, null, ['id' => 'precioU' . $key]) ?></td>
-            <td>&nbsp;&nbsp;&nbsp; <?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?><?= Html::label('0', null, ['id' => 'totalUAux' . $key, 'style' => 'display:none;']) ?></td>
+            <td style=" width:25%;"><?php echo Html::encode($dato->nombre) ?></td>
+            <td style=" width:15%;"><?php echo Html::input('NUMBER', null, 0, ['id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ')', 'min' => 0, 'onkeypress' => 'return validarClic(event)']); echo Html::label($dato->id,null,['id'=>'id' . $key, 'style'=>'display:none'])?></td>
+            <td style=" width:15%;"><?= Html::label($dato->precio, null, ['id' => 'precioU' . $key]) ?></td>
+            <td ><?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?><?= Html::label('0', null, ['id' => 'totalUAux' . $key, 'style' => 'display:none;']) ?></td>
           </TR>
         <?php } ?>
-        <TR>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </TR>
+  
         <TR>
           <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h4><?php echo Html::label('Total') ?></h4></td>
           <td>&nbsp;&nbsp;&nbsp; </td>
@@ -51,14 +51,19 @@ $mesaId = Yii::$app->cache->get('mesaId');
           </td>
         </TR>
       </table>
+</div>
+</div>
+    </div>
+
+      
       <div>
         <p></p>
-        <?= Html::a('Menú', ['pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role'=>"button"]) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <?= Html::button('Guardar', ["class" => "btn btn-secondary menuA", 'role'=>"button", 'onclick'=>"guardarDatos()" ]) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <?= Html::button('Borrar', ["class" => "btn btn-danger menuA", 'role'=>"button", 'onclick'=>"borrarDatos()" ]) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <?= Html::a('Menú', ['pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role'=>"button"]) ?>
+        <?= Html::button('Guardar', ["class" => "btn btn-secondary menuA", 'role'=>"button", 'onclick'=>"guardarDatos()" ]) ?>
+        <?= Html::button('Borrar', ["class" => "btn btn-danger menuA", 'role'=>"button", 'onclick'=>"borrarDatos()" ]) ?>
         <?= Html::a('Ordenar', ['pedido-item/generar-pedido'], ["class" => "btn btn-success menuA", 'role'=>"button"]) ?>
       </div>
-    </ul>
+   
   </div>
 </form>
 <script type="text/javascript">
@@ -87,7 +92,7 @@ $mesaId = Yii::$app->cache->get('mesaId');
   function calculoTotal() { //calcula el valor total referrente a el menu
     var rowCount = $("#tablaMenu tr").length;
     var total = 0;
-    for (var i = 0; i < rowCount-3; i++) {
+    for (var i = 0; i < rowCount-2; i++) {
       total += Number(document.getElementById("totalUAux" + i).innerHTML);
     }
     document.getElementById("totalMenu").innerHTML = formatterDolar.format(total);
