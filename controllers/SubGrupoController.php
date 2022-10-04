@@ -2,19 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\Menu;
-use app\models\Restaurante;
-use app\models\search\MenuSearch;
-use Yii;
-use yii\filters\AccessControl;
+use app\models\SubGrupo;
+use app\models\search\SubGrupoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MenuController implements the CRUD actions for Menu model.
+ * SubGrupoController implements the CRUD actions for SubGrupo model.
  */
-class MenuController extends Controller
+class SubGrupoController extends Controller
 {
     /**
      * @inheritDoc
@@ -23,15 +20,7 @@ class MenuController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [   'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                [
-                    'allow' => true,
-                    'roles' => ['@']
-                ]
-                ],
-            ],
+            [
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -43,13 +32,13 @@ class MenuController extends Controller
     }
 
     /**
-     * Lists all Menu models.
+     * Lists all SubGrupo models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new MenuSearch();
+        $searchModel = new SubGrupoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -59,7 +48,7 @@ class MenuController extends Controller
     }
 
     /**
-     * Displays a single Menu model.
+     * Displays a single SubGrupo model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -72,24 +61,17 @@ class MenuController extends Controller
     }
 
     /**
-     * Creates a new Menu model.
+     * Creates a new SubGrupo model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Menu();
+        $model = new SubGrupo();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->fecha=date('Y-m-d');
-                $model->hora=date('H:i:s');
-                $restaurante_id = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
-                $model->restaurante_id=$restaurante_id->id;
-                if($model->save()){
-                    return $this->redirect(['menu/create']);
-                   //return $this->actionCreate();
-                }
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -101,7 +83,7 @@ class MenuController extends Controller
     }
 
     /**
-     * Updates an existing Menu model.
+     * Updates an existing SubGrupo model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -121,7 +103,7 @@ class MenuController extends Controller
     }
 
     /**
-     * Deletes an existing Menu model.
+     * Deletes an existing SubGrupo model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -135,15 +117,15 @@ class MenuController extends Controller
     }
 
     /**
-     * Finds the Menu model based on its primary key value.
+     * Finds the SubGrupo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Menu the loaded model
+     * @return SubGrupo the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Menu::findOne(['id' => $id])) !== null) {
+        if (($model = SubGrupo::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

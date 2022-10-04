@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\Menu $model */
+/** @var app\models\SubGrupo $model */
 
-$this->title = 'Crear Menú';
-//$this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
+$this->title = 'Create Sub Grupo';
+//$this->params['breadcrumbs'][] = ['label' => 'Sub Grupos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="menu-create">
+<div class="sub-grupo-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

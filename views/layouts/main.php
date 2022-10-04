@@ -76,6 +76,9 @@ if(!Yii::$app->user->isGuest){
                 ['label' => 'Menu', 'url' => ['/menu/index']]
             ):(""),
             (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
+                ['label' => 'Sub-Grupos', 'url' => ['/sub-grupo/index']]
+            ):(""),
+            (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
                 ['label' => 'Pedido', 'url' => ['/pedido/index']]
             ):(""),
             (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
