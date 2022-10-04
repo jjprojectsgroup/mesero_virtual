@@ -25,31 +25,24 @@ $mesaId = Yii::$app->cache->get('mesaId');
     <p></p>
 
     <div ALIGN="center" class="container">
-    <div class="row">
-    <div class="col">
+    <div class="row justify-content-center">
+    <div class=" col-auto">
     <table id="tablaMenu" class="table align-middle">
         <TR>
           <th style=" width:25%;" > Producto</th>
-          <th style=" width:15%;"> Cantidad</th>
-          <th style=" width:15%;"> Precio</th>
-          <th > Total</th>
+          <th style=" width:25%;"> Cantidad</th>
+          <th style=" width:25%;"> Precio</th>
+          <th  style=" width:25%;"> Total</th>
         </TR>
         <?php foreach ($model as $key => $dato) { ?>
           <TR>
             <td style=" width:25%;"><?php echo Html::encode($dato->nombre) ?></td>
-            <td style=" width:15%;"><?php echo Html::input('NUMBER', null, 0, ['id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ')', 'min' => 0, 'onkeypress' => 'return validarClic(event)']); echo Html::label($dato->id,null,['id'=>'id' . $key, 'style'=>'display:none'])?></td>
-            <td style=" width:15%;"><?= Html::label($dato->precio, null, ['id' => 'precioU' . $key]) ?></td>
-            <td ><?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?><?= Html::label('0', null, ['id' => 'totalUAux' . $key, 'style' => 'display:none;']) ?></td>
+            <td style=" width:25%;"><?php echo Html::input('NUMBER', null, 0, ['id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ')', 'min' => 0, 'onkeypress' => 'return validarClic(event)']); echo Html::label($dato->id,null,['id'=>'id' . $key, 'style'=>'display:none'])?></td>
+            <td style=" width:25%;"><?= Html::label($dato->precio, null, ['id' => 'precioU' . $key]) ?></td>
+            <td  style=" width:25%;"><?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?><?= Html::label('0', null, ['id' => 'totalUAux' . $key, 'style' => 'display:none;']) ?></td>
           </TR>
         <?php } ?>
-  
-        <TR>
-          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h4><?php echo Html::label('Total') ?></h4></td>
-          <td>&nbsp;&nbsp;&nbsp; </td>
-          <td>&nbsp;&nbsp;&nbsp;</td>
-          <td>&nbsp;&nbsp;&nbsp;<h4><?= Html::label('$0.00', null, ['id' => 'totalMenu']) ?></h4>
-          </td>
-        </TR>
+
       </table>
 </div>
 </div>
