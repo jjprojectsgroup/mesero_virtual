@@ -18,45 +18,70 @@ $grupos = Grupo::find()->all();
 
 <body>
 
-  <div id="factura-total" class="col-11">
+<div class="main">
+    <div class="container mt-3">
+        <div class="card animate__animated animate__fadeIn">
+            <div class="card-header">
+                Fecha:
+                <strong><?= date('Y-m-d H:i'); ?></strong>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <h4 class="mb-2"><strong><?= $usuario->nombre; ?></strong></h4>
+                       
+                        <div>Direccion: <?= $usuario->direccion; ?></div>
+                        <div>Correo Electronico: <?= $usuario->email; ?></div>
+                        <div>Telefono: <?= $usuario->telefono; ?></div>
+                    </div>
 
-    <div class="row my-3">
-      <div class="col-10">
-        <h1><?= $usuario->nombre; ?></h1>
-        <p>Direcion : <?= $usuario->direccion; ?></p>
-        Fecha : <?= date('Y-m-d H:i'); ?>
 
-      </div>
-      <div class="col-2">
-        <!-- <img src="img/logo.png" /> -->
-      </div>
-    </div>
-    <div class="row my-5">
-      <table class="table table-borderless factura">
-        <thead>
-          <tr>
-            <th>#.</th>
-            <th style=" display:none; ">id.</th>
-            <th>Cant.</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody id="cuerpo">
+                </div>
 
-        </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th style=" display:none; "></th>
-            <th>Total Factura</th>
-            <th id="totalFactura">$0.00</th>
-          </tr>
-        </tfoot>
-      </table>
+                <div class="table">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col-auto" width="5%" class="center">#</th>
+                                <th style=" display:none; ">id.</th>
+                                <th scope="col-auto" class="d-none d-sm-table-cell" width="50%">Descripción</th>
+                                <th scope="col-auto" width="5%" class="text-right">Cant.</th>
+                                <th scope="col-auto" width="40%" class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-5">
+                    </div>
+
+                    <div class="col-lg-4 col-sm-5 ml-auto">
+                        <table class="table table-sm table-clear">
+                            <tbody>      
+                                <tr>
+                                <th></th>
+                                <th style=" display:none; "></th>
+                                    <td class="left">
+                                        <strong>Total Factura</strong>
+                                    </td>
+                                    <td id="totalFactura" class="text-right bg-light">
+                                        <strong>$0.00</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
-    <div class="cond row">
-    </div>
-  </div>
+</div>
+
 
   <script type="text/javascript">
     const formatterDolar2 = new Intl.NumberFormat('en-US', {
@@ -88,10 +113,11 @@ $grupos = Grupo::find()->all();
             var tr = 
             '<tr>'+
             '<td>' + j + '</td>'+
+            '<td>' +'</td>'+
             '<td style=" display:none; ">' + pedido[x].id + '</td>'+
             '<td>' + pedido[x].cantidad + '</td>'+
             '<td>' + formatterDolar2.format(pedido[x].totalU) + '</td>'+
-            '<td>' + pedido[x].totalU + '</td>'+
+            '<td style=" display:none; ">' + pedido[x].totalU + '</td>'+
             '</tr>';
             $("#cuerpo").append(tr);
             total+=Number(pedido[x].totalU);
@@ -104,7 +130,8 @@ $grupos = Grupo::find()->all();
         //calculoTotal();
       }
       <?php  if($contador == count($grupos)-1) { ?>
-        document.getElementById("totalFactura").innerHTML = total;
+      
+        document.getElementById("totalFactura").innerHTML =   formatterDolar2.format(total);
         console.log("Total Factura: " + total);
       <?php }?>
       console.log("<?= $contador?> Total Factura: " + total);

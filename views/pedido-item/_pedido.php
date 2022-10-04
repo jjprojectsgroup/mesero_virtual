@@ -23,21 +23,21 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
 <iframe name="votar" style="display:none;"></iframe>
 <div class="pedido-item-create_pedido">
 
-  <h1><?= Html::encode($this->title) ?></h1>
+  <h1 ALIGN="center"><?= Html::encode($this->title) ?></h1>
 
 
   <div class="menu-form" ALIGN="center">
 
     <div ALIGN="center" class="container">
-      <div class="row">
-        <div class="col">
+      <div class="row justify-content-center">
+        <div class="col-auto">
           <table id="tablaMenu" class="table align-middle">
             <TR>
               <th style=" width:25%;"> Producto</th>
-              <th style=" width:15%;"> Cantidad</th>
+              <th style=" width:25%;"> Cantidad</th>
               <th style=" display:none; "> id</th>
-              <th style=" width:15%;"> Precio</th>
-              <th> Total</th>
+              <th style=" width:25%;"> Precio</th>
+              <th style=" width:25%;"> Total</th>
               <th style="display:none;"> guardar</th>
 
             </TR>
@@ -46,11 +46,11 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
 
               <TR>
                 <td style=" width:25%;"><?php echo Html::encode($item->nombre) ?></td>
-                <td style=" width:15%;"><?= $form->field($pedidoItem, 'cantidad')->textInput(['type' => 'number', 'value' => 0, 'id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ');', 'min' => 0, 'onkeypress' => 'return validarClic(event)'])->label(false) ?> </td>
+                <td style=" width:25%;"><?= $form->field($pedidoItem, 'cantidad')->textInput(['type' => 'number', 'value' => 0, 'id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ');', 'min' => 0, 'onkeypress' => 'return validarClic(event)'])->label(false) ?> </td>
                 <td style=" display:none;"><?= $form->field($pedidoItem, 'menu_id')->textInput(['value' => $item->id, 'id' => 'menu_id' . $key])->Label(false) ?> </td>
-                <td style=" width:15%;"><?= Html::label($item->precio, null, ['id' => 'precioU' . $key]) ?></td>
-                <td><?= $form->field($pedidoItem, 'valor')->textInput(['value' => '0', 'id' => 'totalUAux' . $key, 'style' => 'display:none;'])->Label(false) ?><?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?></td>
-                <td style="display:none;"><?= Html::submitButton('Guardar', ['class' => 'btn btn-success', 'id' => 'btn-save-' . $key, 'target' => 'votar']) ?> </td>
+                <td style=" width:25%;"><?= Html::label($item->precio, null, ['id' => 'precioU' . $key]) ?></td>
+                <td style=" width:25%;"><?= $form->field($pedidoItem, 'valor')->textInput(['value' => '0', 'id' => 'totalUAux' . $key, 'style' => 'display:none;'])->Label(false) ?><?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?></td>
+                <td style="display:none;"><?= Html::submitButton('Pedir', ['class' => 'btn btn-success', 'id' => 'btn-save-' . $key, 'target' => 'votar']) ?> </td>
               </TR>
         </div>
         <?php ActiveForm::end(); ?>
@@ -63,13 +63,13 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
   <div>
     <p></p>
     <?= Html::a('Menú', ['pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
-    <?= Html::button('Guardar', ["class" => "btn btn-secondary menuA", 'role' => "button", 'onclick' => "guardarDatos()"]) ?>
-    <?= Html::button('Borrar', ["class" => "btn btn-danger menuA", 'role' => "button", 'onclick' => "borrarDatos()"]) ?>
-    <?= Html::a('Ordenar', ['pedido-item/generar-pedido'], ["class" => "btn btn-success menuA", 'role' => "button"]) ?>
+    <?= Html::button('Pedir', ["class" => "btn btn-success", 'role' => "button", 'onclick' => "guardarDatos()"]) ?>
+    <?= Html::button('Eliminar Pedido', ["class" => "btn btn-danger menuA", 'role' => "button", 'onclick' => "borrarDatos()"]) ?>
+    <?= Html::button('Ver Factura', ["class" => "btn btn-outline-secondary  menuA",  'id'=>'BotonParaEsconder']) ?> 
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <p></p>
-  <?= Html::button('Factura', ["class" => "btn btn-outline-secondary  menuA",  'id'=>'BotonParaEsconder']) ?> <br /><br />
+
 
 
   <br /><br /><br />
