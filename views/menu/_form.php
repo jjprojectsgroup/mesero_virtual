@@ -42,6 +42,8 @@ foreach ($grupos as $key=>$grupo) {
 
     <div class="form-group">
         <p></p>
+        <?= Html::a('Menú', ['menu/index'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+
     <?= Html::submitButton('Guardar', ['class' => 'btn btn-success', 'onclick'=>'almacenar()']) ?>
     </div>
 

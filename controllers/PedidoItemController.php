@@ -5,10 +5,12 @@ namespace app\controllers;
 use app\models\Menu;
 use app\models\Pedido;
 use app\models\PedidoItem;
+use app\models\Factura;
 use app\models\Restaurante;
 use app\models\search\MenuSearch;
 use app\models\search\PedidoItemSearch;
 use Yii;
+use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -150,7 +152,8 @@ class PedidoItemController extends Controller
                 $pedidoItem->pedido_id=1; 
                 Yii::$app->cache->set('menuBebidas'.$pedidoItem->menu_id, $pedidoItem);         
                 //$pedidoItem->save(false);
-                //return $this->redirect(['pedido/view', 'id' => 1]);
+                return $this->redirect(['/pedido-item/menu']);
+                
             }
         }
         return $this->render('create_pedido', [
@@ -221,13 +224,55 @@ class PedidoItemController extends Controller
     {
         $model = new Menu();
         $model->restaurante_id = 36;
-
+      
         $searchModel = new PedidoItemSearch();
 
         return $this->render('Menu', [
             'model' => $model,
+
         ]);
     }
+
+    public function actionFacturar(){
+        $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
+
+        $menuFinal = new Factura();
+
+          $model = new PedidoItem();
+          if ($this->request->isPost) {
+              if ($menuFinal->load($this->request->post())) {
+              //  if (Model::loadMultiple($menuFinal,Yii::$app->request->post())) {
+                 // if ($pedido = $this->createPedido()) {
+                 //   $menuFinal->pedido_id = $pedido->id;
+                 $menu_id = explode("-", $menuFinal->menu_id);
+                 $cantidad = explode("-", $menuFinal->cantidad);
+                 $valor = explode("-", $menuFinal->valor);
+                /* $data="11111111111111111111";
+                 $console = 'console.log(' . json_encode($menu_id) . ');';
+                 $console = sprintf('<script>%s</script>', $console);
+                 echo $console;*/
+                 //echo '<script> console.log("holaaaaaaaaaaaaaaaaaaaa"); </script>';
+                 //   Yii::$app->cache->set('variancePositions', $menu_id[2]);
+                 
+
+                    //  $menuFinal->save();
+                 // }
+                //  return $this->redirect(['view', 'id' => $menuFinal->id]);
+              }
+          } else {
+           //   $menuFinal->loadDefaultValues();
+          }
+  
+          return $this->render('factura', [
+              'menuFinal' => $menuFinal,
+              'usuario' => $usuario,
+
+          ]);
+
+
+
+    }
+
     public function actionMenuPrincipal()
     {
         return $this->render('pedido');

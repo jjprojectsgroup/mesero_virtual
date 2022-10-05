@@ -18,7 +18,7 @@ $this->title = 'Sub Grupos';
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Sub Grupo', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Sub Grupo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

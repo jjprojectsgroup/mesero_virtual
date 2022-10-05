@@ -2,6 +2,10 @@
 
 use app\models\Grupo;
 use app\models\Menu;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/** @var app\models\Factura $menuFinal */
 
 $grupos = Grupo::find()->all();
 
@@ -18,70 +22,98 @@ $grupos = Grupo::find()->all();
 
 <body>
 
-<div class="main">
+  <div class="main">
     <div class="container mt-3">
-        <div class="card animate__animated animate__fadeIn">
-            <div class="card-header">
-                Fecha:
-                <strong><?= date('Y-m-d H:i'); ?></strong>
-            </div>
-            <div class="card-body">
-                <div class="row justify-content-center">
-                    <div class="col-auto">
-                        <h4 class="mb-2"><strong><?= $usuario->nombre; ?></strong></h4>
-                       
-                        <div>Direccion: <?= $usuario->direccion; ?></div>
-                        <div>Correo Electronico: <?= $usuario->email; ?></div>
-                        <div>Telefono: <?= $usuario->telefono; ?></div>
-                    </div>
-
-
-                </div>
-
-                <div class="table">
-                    <table class="table table-sm table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col-auto" width="5%" class="center">#</th>
-                                <th style=" display:none; ">id.</th>
-                                <th scope="col-auto" class="d-none d-sm-table-cell" width="50%">Descripción</th>
-                                <th scope="col-auto" width="5%" class="text-right">Cant.</th>
-                                <th scope="col-auto" width="40%" class="text-right">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cuerpo">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-sm-5">
-                    </div>
-
-                    <div class="col-lg-4 col-sm-5 ml-auto">
-                        <table class="table table-sm table-clear">
-                            <tbody>      
-                                <tr>
-                                <th></th>
-                                <th style=" display:none; "></th>
-                                    <td class="left">
-                                        <strong>Total Factura</strong>
-                                    </td>
-                                    <td id="totalFactura" class="text-right bg-light">
-                                        <strong>$0.00</strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </div>
+      <div class="card animate__animated animate__fadeIn">
+        <div class="card-header">
+          Fecha:
+          <strong><?= date('Y-m-d H:i'); ?></strong>
         </div>
-    </div>
-</div>
+        <div class="card-body">
+          <div class="row justify-content-center">
+            <div class="col-auto">
+              <h4 class="mb-2"><strong><?= $usuario->nombre; ?></strong></h4>
 
+              <div>Direccion: <?= $usuario->direccion; ?></div>
+              <div>Correo Electronico: <?= $usuario->email; ?></div>
+              <div>Telefono: <?= $usuario->telefono; ?></div>
+            </div>
+          </div>
+          <div class="table">
+            <table class="table table-sm table-striped">
+              <thead>
+                <tr>
+                  <th scope="col-auto" width="5%" class="center">#</th>
+                  <th style=" display:none; ">id.</th>
+                  <th scope="col-auto" class="d-none d-sm-table-cell" width="50%">Descripción</th>
+                  <th scope="col-auto" width="5%" class="text-right">Cant.</th>
+                  <th scope="col-auto" width="40%" class="text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody id="cuerpo">
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-sm-5">
+            </div>
+
+            <div class="col-lg-4 col-sm-5 ml-auto">
+              <table class="table table-sm table-clear">
+                <tbody>
+                  <tr>
+                    <th></th>
+                    <th style=" display:none; "></th>
+                    <td class="left">
+                      <strong>Total Factura</strong>
+                    </td>
+                    <td id="totalFactura" class="text-right bg-light">
+                      <strong>$0.00</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <div class="cliente-form">
+              <?php if (isset($menuFinal)) { ?>
+
+                  <?php $form = ActiveForm::begin([
+                    'fieldConfig' => [
+                      'errorOptions' => [
+                        'encode' => false,
+                        'class' => 'help-block',
+                        'style' => 'color:red;',
+                      ],
+                    ],
+                  ]); ?>
+
+                  <?= $form->field($menuFinal, 'menu_id')->textInput(['id' => 'menu_id']) ?>
+
+                  <?= $form->field($menuFinal, 'cantidad')->textInput(['id' => 'cantidad']) ?>
+
+                  <?= $form->field($menuFinal, 'valor')->textInput(['maxlength' => true, 'id' => 'valor']) ?>
+
+
+                  <div class="form-group">
+                    <p></p>
+                    <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+                  </div>
+
+                  <?php ActiveForm::end(); ?>
+                <?php } ?>
+
+              </div>
+              <?= Html::button('Pedir', ["class" => "btn btn-success", 'role' => "button", 'onclick' => "generarPedido()", 'style' => "float: right;"]) ?>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <script type="text/javascript">
     const formatterDolar2 = new Intl.NumberFormat('en-US', {
@@ -97,6 +129,9 @@ $grupos = Grupo::find()->all();
 
     var total = 0;
 
+    var menu_id = "";
+    var cantidad = "";
+    var valor = "";
     <?php foreach ($grupos as $contador => $grupo) { ?>
 
       var tipoPlato = '<?= $grupo->nombre ?>';
@@ -110,17 +145,20 @@ $grupos = Grupo::find()->all();
 
         foreach ($menu as $key => $dato) { ?>
           if (pedido[x].cantidad > 0) {
-            var tr = 
-            '<tr>'+
-            '<td>' + j + '</td>'+
-            '<td>' +'</td>'+
-            '<td style=" display:none; ">' + pedido[x].id + '</td>'+
-            '<td>' + pedido[x].cantidad + '</td>'+
-            '<td>' + formatterDolar2.format(pedido[x].totalU) + '</td>'+
-            '<td style=" display:none; ">' + pedido[x].totalU + '</td>'+
-            '</tr>';
+            menu_id += pedido[x].id + "-";
+            cantidad += pedido[x].cantidad + "-";
+            valor += pedido[x].totalU + "-";
+            var tr =
+              '<tr>' +
+              '<td>' + j + '</td>' +
+              '<td>' + pedido[x].descripcion + '</td>' +
+              '<td style=" display:none; ">' + pedido[x].id + '</td>' +
+              '<td>' + pedido[x].cantidad + '</td>' +
+              '<td>' + formatterDolar2.format(pedido[x].totalU) + '</td>' +
+              '<td style=" display:none; ">' + pedido[x].totalU + '</td>' +
+              '</tr>';
             $("#cuerpo").append(tr);
-            total+=Number(pedido[x].totalU);
+            total += Number(pedido[x].totalU);
             console.log("Total unitario: " + total);
             j++;
           }
@@ -129,21 +167,24 @@ $grupos = Grupo::find()->all();
 
         //calculoTotal();
       }
-      <?php  if($contador == count($grupos)-1) { ?>
-      
-        document.getElementById("totalFactura").innerHTML =   formatterDolar2.format(total);
+      <?php if ($contador == count($grupos) - 1) { ?>
+        <?php if (isset($menuFinal)) { ?>
+
+          document.getElementById("menu_id").value = menu_id;
+          document.getElementById("cantidad").value = cantidad;
+          document.getElementById("valor").value = valor;
+        <?php } ?>
+
+        document.getElementById("totalFactura").innerHTML = formatterDolar2.format(total);
         console.log("Total Factura: " + total);
-      <?php }?>
-      console.log("<?= $contador?> Total Factura: " + total);
+      <?php } ?>
+      console.log("<?= $contador ?> Total Factura: " + total);
 
     <?php } ?>
 
-    function reload(){
-      
-     // $('#factura-total').load("_factura.php");
-      location.reload();
-    }
+    function generarPedido() {
 
+    }
   </script>
   <style>
     .factura {

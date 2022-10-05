@@ -23,7 +23,7 @@ $columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo',  /*'restaura
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
-        <?= Yii::$app->user->identity->tipo=='1'?Html::a('Create Menu', ['create'], ['class' => 'btn btn-success']):"" ?>
+        <?= Yii::$app->user->identity->tipo=='1'?Html::a('Crear Menu', ['create'], ['class' => 'btn btn-success']):"" ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

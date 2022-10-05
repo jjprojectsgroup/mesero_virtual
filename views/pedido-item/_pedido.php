@@ -45,7 +45,7 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
               <?php $form = ActiveForm::begin(); ?>
 
               <TR>
-                <td style=" width:25%;"><?php echo Html::encode($item->nombre) ?></td>
+                <td style=" width:25%;"><?= Html::label($item->nombre, null, ['id' => 'descripcion' . $key]) ?></td>
                 <td style=" width:25%;"><?= $form->field($pedidoItem, 'cantidad')->textInput(['type' => 'number', 'value' => 0, 'id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ');', 'min' => 0, 'onkeypress' => 'return validarClic(event)'])->label(false) ?> </td>
                 <td style=" display:none;"><?= $form->field($pedidoItem, 'menu_id')->textInput(['value' => $item->id, 'id' => 'menu_id' . $key])->Label(false) ?> </td>
                 <td style=" width:25%;"><?= Html::label($item->precio, null, ['id' => 'precioU' . $key]) ?></td>
@@ -63,9 +63,11 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
   <div>
     <p></p>
     <?= Html::a('Menú', ['pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
-    <?= Html::button('Pedir', ["class" => "btn btn-success", 'role' => "button", 'onclick' => "guardarDatos()"]) ?>
-    <?= Html::button('Eliminar Pedido', ["class" => "btn btn-danger menuA", 'role' => "button", 'onclick' => "borrarDatos()"]) ?>
+    <?= Html::a('Pedir', ['pedido-item/menu'], ["class" => "btn btn-success", 'role' => "button", 'onclick' => "guardarDatos()"]) ?>
+    <?= Html::a('Eliminar Pedido', ['pedido-item/menu'], ["class" => "btn btn-danger menuA", 'role' => "button", 'onclick' => "borrarDatos()"]) ?>
     <?= Html::button('Ver Factura', ["class" => "btn btn-outline-secondary  menuA",  'id'=>'BotonParaEsconder']) ?> 
+    <?= Html::a('facturar', ['pedido-item/facturar'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <p></p>
@@ -142,6 +144,7 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
     <?php foreach ($menu as $key => $dato) { ?>
       pedido1.push({
         'id': document.getElementById("menu_id" + i).value,
+        'descripcion': document.getElementById("descripcion" + i).innerHTML,
         'cantidad': document.getElementById("cantidad" + i).value,
         'totalU': document.getElementById("totalUAux" + i).value,
       });
@@ -152,8 +155,8 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
     /* var valorActual=sessionStorage.getItem("totalPedido");
      sessionStorage.setItem("totalPedido", valorActual!=null?valorActual:0 + precioPedido);
      console.log("totalPedido: " + valorActual);*/
-    document.getElementById("DivAEsconder").style.display = "block";
-    reload();
+
+   // reload();
   }
 
   function borrarDatos() { //borra datos del menu de la sesion actual
