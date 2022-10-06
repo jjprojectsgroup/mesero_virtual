@@ -8,14 +8,19 @@ use Yii;
  * This is the model class for table "menu".
  *
  * @property int $id
- * @property string $grupo
+ * @property int $grupo
  * @property int $restaurante_id
  * @property string $nombre
  * @property string $descripcion
  * @property int $precio
  * @property string $fecha
  * @property string $hora
+ * @property string|null $stock
+ * @property string|null $estado
+ * @property int|null $sub_grupo
  *
+ * @property Grupo $grupo0
+ * @property PedidoItem[] $pedidoItems
  * @property Restaurante $restaurante
  */
 class Menu extends \yii\db\ActiveRecord
@@ -35,9 +40,11 @@ class Menu extends \yii\db\ActiveRecord
     {
         return [
             [['grupo', 'restaurante_id', 'nombre', 'descripcion', 'fecha', 'hora'], 'required'],
-            [['restaurante_id', 'precio'], 'integer'],
+            [['grupo', 'restaurante_id', 'precio', 'sub_grupo'], 'integer'],
             [['fecha'], 'safe'],
-            [['grupo', 'nombre', 'descripcion', 'hora'], 'string', 'max' => 52],
+            [['nombre', 'descripcion', 'hora'], 'string', 'max' => 52],
+            [['stock', 'estado'], 'string', 'max' => 250],
+            [['grupo'], 'exist', 'skipOnError' => true, 'targetClass' => Grupo::class, 'targetAttribute' => ['grupo' => 'id']],
             [['restaurante_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurante::class, 'targetAttribute' => ['restaurante_id' => 'id']],
         ];
     }
@@ -56,7 +63,30 @@ class Menu extends \yii\db\ActiveRecord
             'precio' => 'Precio',
             'fecha' => 'Fecha',
             'hora' => 'Hora',
+            'stock' => 'Stock',
+            'estado' => 'Estado',
+            'sub_grupo' => 'Sub Grupo',
         ];
+    }
+
+    /**
+     * Gets query for [[Grupo0]].
+     *
+     * @return \yii\db\ActiveQuery|GrupoQuery
+     */
+    public function getGrupo0()
+    {
+        return $this->hasOne(Grupo::class, ['id' => 'grupo']);
+    }
+
+    /**
+     * Gets query for [[PedidoItems]].
+     *
+     * @return \yii\db\ActiveQuery|PedidoItemQuery
+     */
+    public function getPedidoItems()
+    {
+        return $this->hasMany(PedidoItem::class, ['menu_id' => 'id']);
     }
 
     /**

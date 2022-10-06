@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\search\MenuSearch $model */
+/** @var app\models\search\GrupoSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="menu-search">
+<div class="grupo-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,26 +17,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'grupo') ?>
-
-    <?= $form->field($model, 'restaurante_id') ?>
-
     <?= $form->field($model, 'nombre') ?>
 
-    <?= $form->field($model, 'descripcion') ?>
-
-    <?php // echo $form->field($model, 'precio') ?>
-
-    <?php // echo $form->field($model, 'fecha') ?>
-
-    <?php // echo $form->field($model, 'hora') ?>
-
-    <?php // echo $form->field($model, 'stock') ?>
-
-    <?php // echo $form->field($model, 'estado') ?>
-
-    <?php // echo $form->field($model, 'sub_grupo') ?>
-
+    <?= $form->field($model, 'restaurante_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

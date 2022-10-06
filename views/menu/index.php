@@ -13,9 +13,9 @@ use yii\grid\GridView;
 $this->title = 'Menus';
 $this->params['breadcrumbs'][] = $this->title;
 if(Yii::$app->user->identity->tipo=='0'){
-$columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', 'restaurante_id', 'nombre', 'descripcion', 'precio'/*, 'fecha', 'hora'*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],];
+$columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', 'restaurante_id', 'nombre', 'descripcion', 'precio'/*, 'fecha', 'hora', 'stock', 'estado', 'sub_grupo',*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],];
 }elseif(Yii::$app->user->identity->tipo=='1'){	
-$columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo',  /*'restaurante_id',*/ 'nombre', 'descripcion', 'precio'/*, 'fecha', 'hora'*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],];
+$columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', 'sub_grupo', /*'restaurante_id',*/ 'nombre', 'descripcion', 'precio', 'stock', 'estado'/*, 'fecha', 'hora'*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],];
 
 }
 ?>

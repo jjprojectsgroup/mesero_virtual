@@ -30,10 +30,20 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => \yii\symfonymailer\Mailer::class,
-            'viewPath' => '@app/mail',
+           // 'class' => \yii\symfonymailer\Mailer::class,
+           'class' => 'yii\swiftmailer\Mailer',
+           // 'viewPath' => '@app/mail',
             // send all mails to a file by default.
-            'useFileTransport' => true,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.mailtrap.io',
+                'username' => 'eedbd25cdf97d8',
+                'password' => '2c9a58c78b042b',
+                'port' => '2525',
+                'encryption' => 'tls'
+            ],
+            'useFileTransport' => false,
+
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

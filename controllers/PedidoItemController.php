@@ -77,7 +77,7 @@ class PedidoItemController extends Controller
         $model = new PedidoItem();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                if ($pedido = $this->createPedido()) {
+                if ($pedido = $this->createPedido(0)) {
                     $model->pedido_id = $pedido->id;
                     $model->save();
                 }
@@ -149,11 +149,10 @@ class PedidoItemController extends Controller
         Yii::$app->cache->set('tipoPlato', 'Bebidas');
         if ($this->request->isPost) {
             if ($pedidoItem->load($this->request->post())) {
-                $pedidoItem->pedido_id=1; 
-                Yii::$app->cache->set('menuBebidas'.$pedidoItem->menu_id, $pedidoItem);         
+                $pedidoItem->pedido_id = 1;
+                Yii::$app->cache->set('menuBebidas' . $pedidoItem->menu_id, $pedidoItem);
                 //$pedidoItem->save(false);
                 return $this->redirect(['/pedido-item/menu']);
-                
             }
         }
         return $this->render('create_pedido', [
@@ -169,8 +168,8 @@ class PedidoItemController extends Controller
         Yii::$app->cache->set('tipoPlato', 'Platos Fuertes');
         if ($this->request->isPost) {
             if ($pedidoItem->load($this->request->post())) {
-                $pedidoItem->pedido_id=1; 
-                Yii::$app->cache->set('menuPlatos'.$pedidoItem->menu_id, $pedidoItem);         
+                $pedidoItem->pedido_id = 1;
+                Yii::$app->cache->set('menuPlatos' . $pedidoItem->menu_id, $pedidoItem);
                 //$pedidoItem->save(false);
                 //return $this->redirect(['pedido/view', 'id' => 1]);
             }
@@ -188,8 +187,8 @@ class PedidoItemController extends Controller
         $pedidoItem = new PedidoItem();
         if ($this->request->isPost) {
             if ($pedidoItem->load($this->request->post())) {
-                $pedidoItem->pedido_id=1; 
-                Yii::$app->cache->set('menuPlatos'.$pedidoItem->menu_id, $pedidoItem);         
+                $pedidoItem->pedido_id = 1;
+                Yii::$app->cache->set('menuPlatos' . $pedidoItem->menu_id, $pedidoItem);
                 //$pedidoItem->save(false);
                 //return $this->redirect(['pedido/view', 'id' => 1]);
             }
@@ -198,7 +197,6 @@ class PedidoItemController extends Controller
             'pedidoItem' => $pedidoItem,
             'menu' => $menu,
         ]);
-        
     }
 
     public function actionPedidoPostres()
@@ -208,8 +206,8 @@ class PedidoItemController extends Controller
         $pedidoItem = new PedidoItem();
         if ($this->request->isPost) {
             if ($pedidoItem->load($this->request->post())) {
-                $pedidoItem->pedido_id=1; 
-                Yii::$app->cache->set('menuPlatos'.$pedidoItem->menu_id, $pedidoItem);         
+                $pedidoItem->pedido_id = 1;
+                Yii::$app->cache->set('menuPlatos' . $pedidoItem->menu_id, $pedidoItem);
                 //$pedidoItem->save(false);
                 //return $this->redirect(['pedido/view', 'id' => 1]);
             }
@@ -224,53 +222,54 @@ class PedidoItemController extends Controller
     {
         $model = new Menu();
         $model->restaurante_id = 36;
-      
-        $searchModel = new PedidoItemSearch();
 
         return $this->render('Menu', [
             'model' => $model,
-
         ]);
     }
 
-    public function actionFacturar(){
+    public function actionFacturar()   // almacena el pedido del cliente en base de datos
+    {
         $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
 
         $menuFinal = new Factura();
+        $pedido = new Pedido();
 
-          $model = new PedidoItem();
-          if ($this->request->isPost) {
-              if ($menuFinal->load($this->request->post())) {
-              //  if (Model::loadMultiple($menuFinal,Yii::$app->request->post())) {
-                 // if ($pedido = $this->createPedido()) {
-                 //   $menuFinal->pedido_id = $pedido->id;
-                 $menu_id = explode("-", $menuFinal->menu_id);
-                 $cantidad = explode("-", $menuFinal->cantidad);
-                 $valor = explode("-", $menuFinal->valor);
-                /* $data="11111111111111111111";
-                 $console = 'console.log(' . json_encode($menu_id) . ');';
-                 $console = sprintf('<script>%s</script>', $console);
-                 echo $console;*/
-                 //echo '<script> console.log("holaaaaaaaaaaaaaaaaaaaa"); </script>';
-                 //   Yii::$app->cache->set('variancePositions', $menu_id[2]);
-                 
+        if ($this->request->isPost) {
+            if ($menuFinal->load($this->request->post())) {
 
-                    //  $menuFinal->save();
-                 // }
-                //  return $this->redirect(['view', 'id' => $menuFinal->id]);
-              }
-          } else {
-           //   $menuFinal->loadDefaultValues();
-          }
-  
-          return $this->render('factura', [
-              'menuFinal' => $menuFinal,
-              'usuario' => $usuario,
+                $menu_id = explode("-", $menuFinal->menu_id);
+                $cantidad = explode("-", $menuFinal->cantidad);
+                $valor = explode("-", $menuFinal->valor);
 
-          ]);
+                if (array_sum($valor) > 0 && $pedido = $this->createPedido(array_sum($valor))) {
+                    foreach ($menu_id as $key => $item) {
+                        $pedidoItem = new PedidoItem();
+                        if ($key != count($menu_id) - 1) {
+                            $pedidoItem->pedido_id = $pedido->id;
+                            $pedidoItem->menu_id = $menu_id[$key];
+                            $pedidoItem->cantidad = $cantidad[$key];
+                            $pedidoItem->valor = $valor[$key];
+                            $pedidoItem->save(false);
+                        }
+                    }
 
+                    return $this->redirect(['pedido/view', 'id' => $pedido->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Primero debe selecionar algun item del menu para poder generar el pedido');
+                    //echo '<script> alert("Primero debe selecionar algun item del menu para poder generar el pedido"); </script>';
+                }
+                //echo '<script> console.log("holaaaaaaaaaaaaaaaaaaaa"); </script>';
+            }
+        } else {
+            //   $menuFinal->loadDefaultValues();
+        }
 
+        return $this->render('factura', [
+            'menuFinal' => $menuFinal,
+            'usuario' => $usuario,
 
+        ]);
     }
 
     public function actionMenuPrincipal()
@@ -278,15 +277,34 @@ class PedidoItemController extends Controller
         return $this->render('pedido');
     }
 
-    function createPedido()
+    function createPedido($valor)
     {
         $pedido = new Pedido();
         $restaurante = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
         $pedido->restaurante_id = $restaurante->id;
         $pedido->cliente_id = '';
-        $pedido->valor = 10000;
+        $pedido->valor = $valor;
         $pedido->estado = 'activo';
         if ($pedido->save(false)) {
+            Yii::$app->mailer->compose()
+                ->setFrom('jrbgoye@gmail.com')
+                ->setTo('boada1997@gmail.com')
+                ->setSubject('Email sent from Yii2-Swiftmailer')
+                ->send();
+            /*   Yii::$app->mailer->compose()
+                ->setTo("jrbgoye@gmail.com")
+                ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+              //  ->setReplyTo([$this->email => $this->name])
+                ->setSubject('Prueba2')
+                ->setTextBody('esto es una prueba para facturacion')
+                ->send();*/
+            /*     Yii::$app->mailer->compose()
+                ->setFrom('boada1997@gmail.com')
+                ->setTo('jrbgoye@gmail.com')
+                ->setSubject('Prueba')
+                ->setTextBody('esto es una prueba para facturacion')
+                ->setHtmlBody('<b>Contenido HTML</b>')
+                ->send();*/
             return $pedido;
         } else {
             return false;

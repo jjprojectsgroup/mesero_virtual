@@ -5,8 +5,6 @@ namespace app\models\search;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Menu;
-use app\models\Restaurante;
-use Yii;
 
 /**
  * MenuSearch represents the model behind the search form of `app\models\Menu`.
@@ -19,8 +17,8 @@ class MenuSearch extends Menu
     public function rules()
     {
         return [
-            [['id', 'restaurante_id', 'precio'], 'integer'],
-            [['grupo', 'nombre', 'descripcion', 'fecha', 'hora'], 'safe'],
+            [['id', 'grupo', 'restaurante_id', 'precio', 'sub_grupo'], 'integer'],
+            [['nombre', 'descripcion', 'fecha', 'hora', 'stock', 'estado'], 'safe'],
         ];
     }
 
@@ -59,28 +57,20 @@ class MenuSearch extends Menu
         }
 
         // grid filtering conditions
-        if(Yii::$app->user->identity->tipo == '1'){
-            $restaurante= Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
-            $query->andFilterWhere([
-                'id' => $this->id,
-                'restaurante_id' => $restaurante->id,
-                'precio' => $this->precio,
-                'fecha' => $this->fecha,
-            ]);
-        }else{
-            $query->andFilterWhere([
-                'id' => $this->id,
-                'restaurante_id' => $this->restaurante_id,
-                'precio' => $this->precio,
-                'fecha' => $this->fecha,
-            ]);   
-        }
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'grupo' => $this->grupo,
+            'restaurante_id' => $this->restaurante_id,
+            'precio' => $this->precio,
+            'fecha' => $this->fecha,
+            'sub_grupo' => $this->sub_grupo,
+        ]);
 
-
-        $query->andFilterWhere(['like', 'grupo', $this->grupo])
-            ->andFilterWhere(['like', 'nombre', $this->nombre])
+        $query->andFilterWhere(['like', 'nombre', $this->nombre])
             ->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'hora', $this->hora]);
+            ->andFilterWhere(['like', 'hora', $this->hora])
+            ->andFilterWhere(['like', 'stock', $this->stock])
+            ->andFilterWhere(['like', 'estado', $this->estado]);
 
         return $dataProvider;
     }

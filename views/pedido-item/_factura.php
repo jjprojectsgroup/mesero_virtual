@@ -2,6 +2,7 @@
 
 use app\models\Grupo;
 use app\models\Menu;
+use PhpParser\Node\Stmt\Label;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -76,7 +77,7 @@ $grupos = Grupo::find()->all();
             </div>
             <div>
               <div class="cliente-form">
-              <?php if (isset($menuFinal)) { ?>
+                <?php if (isset($menuFinal)) { ?>
 
                   <?php $form = ActiveForm::begin([
                     'fieldConfig' => [
@@ -88,23 +89,23 @@ $grupos = Grupo::find()->all();
                     ],
                   ]); ?>
 
-                  <?= $form->field($menuFinal, 'menu_id')->textInput(['id' => 'menu_id']) ?>
+                  <?= $form->field($menuFinal, 'menu_id')->hiddenInput(['id' => 'menu_id'])->label(false) ?>
 
-                  <?= $form->field($menuFinal, 'cantidad')->textInput(['id' => 'cantidad']) ?>
+                  <?= $form->field($menuFinal, 'cantidad')->hiddenInput(['id' => 'cantidad'])->label(false) ?>
 
-                  <?= $form->field($menuFinal, 'valor')->textInput(['maxlength' => true, 'id' => 'valor']) ?>
-
+                  <?= $form->field($menuFinal, 'valor')->hiddenInput(['maxlength' => true, 'id' => 'valor'])->label(false) ?>
 
                   <div class="form-group">
                     <p></p>
-                    <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+                    <?= Html::submitButton('Pedir', ['class' => 'btn btn-success', 'style' => "float: right;", 'onclick' => 'borrarFactura();']) ?>
+         
                   </div>
 
                   <?php ActiveForm::end(); ?>
                 <?php } ?>
 
               </div>
-              <?= Html::button('Pedir', ["class" => "btn btn-success", 'role' => "button", 'onclick' => "generarPedido()", 'style' => "float: right;"]) ?>
+              <?= Html::a('Menú', ['pedido-item/menu'], ["class" => "btn btn-success", 'role' => "button", 'style' => "float: left;"]) ?>
             </div>
           </div>
 
@@ -116,6 +117,8 @@ $grupos = Grupo::find()->all();
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   <script type="text/javascript">
+    var tipos = [];
+
     const formatterDolar2 = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
@@ -137,6 +140,7 @@ $grupos = Grupo::find()->all();
       var tipoPlato = '<?= $grupo->nombre ?>';
       tipoPlato = tipoPlato.split(" ", 1);
       if (sessionStorage.getItem("pedido" + tipoPlato)) { //si existen datos del menu almacenados los carga en en formulario
+        tipos.push(tipoPlato);
         var pedido = sessionStorage.getItem("pedido" + tipoPlato);
         pedido = JSON.parse(pedido);
         var x = 0;
@@ -182,9 +186,12 @@ $grupos = Grupo::find()->all();
 
     <?php } ?>
 
-    function generarPedido() {
-
+    function borrarFactura() { 
+    tipos.forEach(function(elemento, indice, array) {
+    sessionStorage.removeItem("pedido" + elemento);
+    })
     }
+    
   </script>
   <style>
     .factura {

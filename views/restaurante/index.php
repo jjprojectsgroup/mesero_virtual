@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'usuario_id',
             //'fecha',
             //'hora',
+            //'logo',
             ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],
 
         ],

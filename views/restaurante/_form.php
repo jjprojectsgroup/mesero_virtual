@@ -34,7 +34,8 @@ $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
     <div  class="container ">
     <div class="row">
         <div class="col-md-3 ">
-            <div class="d-flex flex-column align-items-center text-center "><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold"><?php echo $model->nombre ?></span><span class="text-black-50"><?php echo $model->email ?></span><span> </span></div>
+            <div class="d-flex flex-column align-items-center text-center "><?= Html::img($model->logo,['width'=>'150px','class'=>'rounded-circle mt-5']) ?><span class="font-weight-bold"><p></p><?= $form->field($model, 'archivo')->fileInput()->label(false) ?><?php echo $model->nombre ?></span><span class="text-black-50"><?php echo $model->email ?></span><span> </span></div>
+        
         </div>
         <div class="col-md-6 ">
             <div class="">
@@ -60,6 +61,7 @@ $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
                     <div class="col-md-6"><label class="labels">Activado</label><?= $form->field($model, 'activado')->dropDownList($activado, ['readonly'=> $readonly])->label(false) ?></div>  
                   <div class="col-md-6"><label class="labels">Fecha de Registro</label><?= $form->field($model, 'fecha')->textInput(['readonly'=> $readonly])->label(false)->label(false) ?></div>
                     <div class="col-md-6"><label class="labels">Hora de Registro</label><?= $form->field($model, 'hora')->textInput(['maxlength' => true, 'readonly'=> $readonly])->label(false) ?></div>
+
                    </div>
                     <?php }?>
                 </div>

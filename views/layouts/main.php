@@ -87,7 +87,7 @@ if(!Yii::$app->user->isGuest){
             (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
                 ['label' => 'Pedido Cliente', 'url' => ['/pedido-item/menu']]
             ):(""),
-          //  ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Contact', 'url' => ['/site/contact']],
         ]
     ]);
     echo '</div>';

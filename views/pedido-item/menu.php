@@ -28,30 +28,14 @@ Yii::$app->cache->set('mesaId', $mesaId); // guardar $restauranteId en caché pa
     <?= Html::a('Entradas', ['pedido-item/pedido-entradas'], ["class" => "btn btn-outline-secondary btn-lg menuA", 'role' => "button"]) ?> <br /><br />
     <?= Html::a('Platos Fuertes', ['pedido-item/pedido-platos'], ["class" => "btn btn-outline-secondary btn-lg menuA", 'role' => "button"]) ?> <br /><br />
     <?= Html::a('Postres', ['pedido-item/pedido-postres'], ["class" => "btn btn-outline-secondary  menuA", 'role' => "button"]) ?> <br /><br /><br /><br /><br /><br />
-    <?= Html::button('Factura', ["class" => "btn btn-outline-secondary  menuA",  'id'=>'BotonParaEsconder']) ?> <br /><br />
+    <?= Html::a('Ver Factura', ['pedido-item/facturar'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
 
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-  <br /><br /><br />
-  <div class="panel_error" id="DivAEsconder" style="display: none;">
-  <?= $this->render('_factura', [
-        'usuario' => $usuario,
-    ]) ?>
-  </div>
-  <br /><br /><br />
 
   <script type="text/javascript">
-    $(function() {
-      $("#BotonParaEsconder").click(function() {
-        var div =document.getElementById("DivAEsconder");
-        if(div.style.display=="none"){
-          div.style.display="block";
-        }else{
-       div.style.display="none";
-        }
-      });
-    });
+
   </script>
 
   <style>

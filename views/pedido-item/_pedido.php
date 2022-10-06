@@ -20,7 +20,6 @@ $mesaId = Yii::$app->cache->get('mesaId');
 $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
 
 ?>
-<iframe name="votar" style="display:none;"></iframe>
 <div class="pedido-item-create_pedido">
 
   <h1 ALIGN="center"><?= Html::encode($this->title) ?></h1>
@@ -38,8 +37,6 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
               <th style=" display:none; "> id</th>
               <th style=" width:25%;"> Precio</th>
               <th style=" width:25%;"> Total</th>
-              <th style="display:none;"> guardar</th>
-
             </TR>
             <?php foreach ($menu as $key => $item) { ?>
               <?php $form = ActiveForm::begin(); ?>
@@ -50,7 +47,6 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
                 <td style=" display:none;"><?= $form->field($pedidoItem, 'menu_id')->textInput(['value' => $item->id, 'id' => 'menu_id' . $key])->Label(false) ?> </td>
                 <td style=" width:25%;"><?= Html::label($item->precio, null, ['id' => 'precioU' . $key]) ?></td>
                 <td style=" width:25%;"><?= $form->field($pedidoItem, 'valor')->textInput(['value' => '0', 'id' => 'totalUAux' . $key, 'style' => 'display:none;'])->Label(false) ?><?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?></td>
-                <td style="display:none;"><?= Html::submitButton('Pedir', ['class' => 'btn btn-success', 'id' => 'btn-save-' . $key, 'target' => 'votar']) ?> </td>
               </TR>
         </div>
         <?php ActiveForm::end(); ?>
@@ -63,10 +59,9 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
   <div>
     <p></p>
     <?= Html::a('Menú', ['pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
-    <?= Html::a('Pedir', ['pedido-item/menu'], ["class" => "btn btn-success", 'role' => "button", 'onclick' => "guardarDatos()"]) ?>
+    <?= Html::a('Pedir', ['pedido-item/facturar'], ["class" => "btn btn-success", 'role' => "button", 'onclick' => "guardarDatos()"]) ?>
     <?= Html::a('Eliminar Pedido', ['pedido-item/menu'], ["class" => "btn btn-danger menuA", 'role' => "button", 'onclick' => "borrarDatos()"]) ?>
-    <?= Html::button('Ver Factura', ["class" => "btn btn-outline-secondary  menuA",  'id'=>'BotonParaEsconder']) ?> 
-    <?= Html::a('facturar', ['pedido-item/facturar'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+    <?= Html::a('Facturar', ['pedido-item/facturar'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
 
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -74,12 +69,6 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
 
 
 
-  <br /><br /><br />
-  <div class="panel_error" id="DivAEsconder" style="display: none;">
-    <?= $this->render('_factura', [
-      'usuario' => $usuario,
-    ]) ?>
-  </div>
   <br /><br /><br />
 
 </div>
@@ -185,15 +174,4 @@ $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id])
     //calculoTotal();
   }
 
-
-  $(function() {
-    $("#BotonParaEsconder").click(function() {
-      var div = document.getElementById("DivAEsconder");
-      if (div.style.display == "none") {
-        div.style.display = "block";
-      } else {
-        div.style.display = "none";
-      }
-    });
-  });
 </script>

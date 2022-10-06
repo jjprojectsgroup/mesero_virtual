@@ -109,6 +109,8 @@ class UserController extends Controller
                         $restaurante->usuario_id=$model->id;
                         $restaurante->fecha=date('Y-m-d');
                         $restaurante->hora=date('H:i:s');
+                        $restaurante->logo='img/logo.png';
+
                         
                         if ($restaurante->save(false)) {   
                             /*$conexion = new mysqli("localhost", "MeseroAdmin", "MeseroAdmin2022$", "mesero_virtual");

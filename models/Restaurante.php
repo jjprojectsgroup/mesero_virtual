@@ -8,10 +8,10 @@ use Yii;
  * This is the model class for table "restaurante".
  *
  * @property int $id
- * @property int $nit
+ * @property string $nit
  * @property string $nombre
- * @property int $telefono
- * @property int $celular
+ * @property string $telefono
+ * @property string $celular
  * @property string $email
  * @property string $encargado
  * @property string $direccion
@@ -23,11 +23,17 @@ use Yii;
  * @property int $usuario_id
  * @property string $fecha
  * @property string $hora
+ * @property string|null $logo
  *
+ * @property Grupo[] $grupos
+ * @property Menu[] $menus
+ * @property Pedido[] $pedidos
+ * @property SubGrupo[] $subGrupos
  * @property User $usuario
  */
 class Restaurante extends \yii\db\ActiveRecord
 {
+    public $archivo;
     /**
      * {@inheritdoc}
      */
@@ -43,9 +49,10 @@ class Restaurante extends \yii\db\ActiveRecord
     {
         return [
             [['nit', 'nombre', 'telefono', 'celular', 'email', 'encargado', 'direccion', 'ciudad', 'total_mesas', 'mensualidad', 'codigo_de_activacion', 'activado', 'usuario_id', 'fecha', 'hora'], 'required'],
-            [['nit', 'telefono', 'celular', 'total_mesas', 'mensualidad', 'codigo_de_activacion', 'activado', 'usuario_id'], 'integer'],
+            [['total_mesas', 'mensualidad', 'codigo_de_activacion', 'activado', 'usuario_id'], 'integer'],
             [['fecha'], 'safe'],
-            [['nombre', 'email', 'encargado', 'direccion', 'ciudad', 'hora'], 'string', 'max' => 250],
+            [['nit', 'nombre', 'telefono', 'celular', 'email', 'encargado', 'direccion', 'ciudad', 'hora'], 'string', 'max' => 250],
+            [['archivo'], 'file', 'extensions' => 'jpg,png'],
             [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['usuario_id' => 'id']],
         ];
     }
@@ -72,13 +79,54 @@ class Restaurante extends \yii\db\ActiveRecord
             'usuario_id' => 'Usuario ID',
             'fecha' => 'Fecha',
             'hora' => 'Hora',
+            'archivo' => 'Logo',
         ];
+    }
+
+    /**
+     * Gets query for [[Grupos]].
+     *
+     * @return \yii\db\ActiveQuery|GrupoQuery
+     */
+    public function getGrupos()
+    {
+        return $this->hasMany(Grupo::class, ['restaurante_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Menus]].
+     *
+     * @return \yii\db\ActiveQuery|MenuQuery
+     */
+    public function getMenus()
+    {
+        return $this->hasMany(Menu::class, ['restaurante_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Pedidos]].
+     *
+     * @return \yii\db\ActiveQuery|PedidoQuery
+     */
+    public function getPedidos()
+    {
+        return $this->hasMany(Pedido::class, ['restaurante_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[SubGrupos]].
+     *
+     * @return \yii\db\ActiveQuery|SubGrupoQuery
+     */
+    public function getSubGrupos()
+    {
+        return $this->hasMany(SubGrupo::class, ['restaurante_id' => 'id']);
     }
 
     /**
      * Gets query for [[Usuario]].
      *
-     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|UserQuery
      */
     public function getUsuario()
     {

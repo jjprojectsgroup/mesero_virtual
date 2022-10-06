@@ -2,6 +2,8 @@
 
 use app\models\Grupo;
 use app\models\Menu;
+use app\models\Restaurante;
+use app\models\SubGrupo;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -11,8 +13,15 @@ use yii\widgets\ActiveForm;
 //$grupo = [ 'Bebidas' => 'Bebidas', 'Entradas' => 'Entradas',  'Platos fuertes' => 'Platos fuertes', 'Postres' => 'Postres'];
 $grupos = Grupo::find()->all();
 $nombreGrupos = null;
-foreach ($grupos as $key=>$grupo) {
+foreach ($grupos as $key => $grupo) {
   $nombreGrupos[$grupo->id] = $grupo->nombre;
+}
+$usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
+
+$subGrupos = SubGrupo::find()->where(['restaurante_id' => $usuario->id])->all();
+$nombreSubGrupo = null;
+foreach ($subGrupos as $key => $subGrupo) {
+  $nombreSubGrupo[$subGrupo->id] = $subGrupo->nombre;
 }
 ?>
 <div class="menu-form">
@@ -26,7 +35,9 @@ foreach ($grupos as $key=>$grupo) {
     ],
   ]); ?>
 
-  <?= $form->field($model, 'grupo')->dropDownList($nombreGrupos, ['prompt' => 'Seleccione un Grupo', 'id'=>'option', 'onchange'=>'almacenar()']) ?>
+  <?= $form->field($model, 'grupo')->dropDownList($nombreGrupos, ['prompt' => 'Seleccione un Grupo', 'id' => 'option', 'onchange' => 'almacenar()']) ?>
+
+  <?= $form->field($model, 'sub_grupo')->dropDownList($nombreSubGrupo, ['prompt' => 'Seleccione un Sub-Grupo', 'id' => 'subOption', 'onchange' => 'almacenar()']) ?>
 
   <!--  <?= $form->field($model, 'restaurante_id')->textInput() ?>-->
 
@@ -34,18 +45,22 @@ foreach ($grupos as $key=>$grupo) {
 
   <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
-  <?= $form->field($model, 'precio')->textInput(['type'=>'number', 'min'=>0, 'onkeypress' => 'return validarClic(event)']) ?>
+  <?= $form->field($model, 'precio')->textInput(['type' => 'number', 'min' => 0, 'onkeypress' => 'return validarClic(event)']) ?>
 
   <!--  <?= $form->field($model, 'fecha')->textInput() ?>
 
     <?= $form->field($model, 'hora')->textInput(['maxlength' => true]) ?> -->
 
-    <div class="form-group">
-        <p></p>
-        <?= Html::a('Menú', ['menu/index'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+  <?= $form->field($model, 'stock')->textInput(['maxlength' => true]) ?>
 
-    <?= Html::submitButton('Guardar', ['class' => 'btn btn-success', 'onclick'=>'almacenar()']) ?>
-    </div>
+  <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
+
+  <div class="form-group">
+    <p></p>
+    <?= Html::a('Menú', ['menu/index'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+
+    <?= Html::submitButton('Guardar', ['class' => 'btn btn-success', 'onclick' => 'almacenar()']) ?>
+  </div>
 
   <?php ActiveForm::end(); ?>
 
@@ -53,12 +68,17 @@ foreach ($grupos as $key=>$grupo) {
 
 <script type="text/javascript">
   function almacenar() { // obtiene el id del dropDownList seleccionado al enviar el formulario, lo almacena en la menoria y lo vuelve a selecionar al cargar el formulario
-    var option= document.getElementById("option");
-  sessionStorage.setItem("grupoMenu", option.value);
+    var option = document.getElementById("option");
+    var subOption = document.getElementById("subOption");
+    sessionStorage.setItem("grupoMenu", option.value);
+    sessionStorage.setItem("subGrupoMenu", subOption.value);
+
   }
 
-  if(sessionStorage.getItem("grupoMenu")!=null){
-  document.getElementById("option").value=sessionStorage.getItem("grupoMenu"); 
+  if (sessionStorage.getItem("grupoMenu") != null) {
+    document.getElementById("option").value = sessionStorage.getItem("grupoMenu");
+    document.getElementById("subOption").value = sessionStorage.getItem("subGrupoMenu");
+
   }
 
   function validarClic(e) { //impide la entrada por teclado en un input
@@ -79,20 +99,19 @@ foreach ($grupos as $key=>$grupo) {
     te = String.fromCharCode(tecla);
     return patron.test(te);
   }
-/*function validarContinuar(){
-
-}
-
-var submitBtn = document.getElementById("submit");
-  
-  submitBtn.onclick = function (event) {
-    var resultado = window.confirm('Desea continuar registrando menus?');
-  if (resultado === true) {
-    
-  } else {
+  /*function validarContinuar(){
 
   }
 
-  }; */
+  var submitBtn = document.getElementById("submit");
+    
+    submitBtn.onclick = function (event) {
+      var resultado = window.confirm('Desea continuar registrando menus?');
+    if (resultado === true) {
+      
+    } else {
 
+    }
+
+    }; */
 </script>

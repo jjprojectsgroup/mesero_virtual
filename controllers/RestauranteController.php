@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessController;
-
+use yii\web\UploadedFile;
 
 /**
  * RestauranteController implements the CRUD actions for Restaurante model.
@@ -27,10 +27,10 @@ class RestauranteController extends Controller
                 'access' => [
                     'class' => AccessControl::className(),
                     'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@']
-                    ]
+                        [
+                            'allow' => true,
+                            'roles' => ['@']
+                        ]
                     ],
                 ],
                 'verbs' => [
@@ -80,8 +80,9 @@ class RestauranteController extends Controller
     public function actionCreate()
     {
         $model = new Restaurante();
+      //  $this->subirLogo($model);
 
-        if ($this->request->isPost) {
+         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -105,8 +106,21 @@ class RestauranteController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->archivo = UploadedFile::getInstance($model, 'archivo');
+
+            if ($model->validate()) {
+                if ($model->archivo) {
+                    $rutaLogo = 'logos/' . time() . '_' . $model->archivo->baseName . '.' . $model->archivo->extension;  //se genera la ruta del archivo con un nombre especifico
+                    if($model->archivo->saveAs($rutaLogo)){
+                        $model->logo = $rutaLogo;
+                    }
+
+                }
+            }
+            if($model->save(false)){
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -142,5 +156,21 @@ class RestauranteController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function subirLogo(Restaurante $model)
+    {
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->archivo = UploadedFile::getInstance($model, 'archivo');
+                $rutaLogo = 'logos/' . time() . '_' . $model->archivo->baseName . '.' . $model->archivo->extension;  //se genera la ruta del archivo con un nombre especifico
+                $model->archivo->saveAs($rutaLogo);
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
     }
 }

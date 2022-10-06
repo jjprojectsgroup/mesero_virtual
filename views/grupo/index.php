@@ -1,27 +1,25 @@
 <?php
 
-use app\models\Pedido;
+use app\models\Grupo;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var app\models\search\PedidoSearch $searchModel */
+/** @var app\models\search\GrupoSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Pedidos';
+$this->title = 'Grupos';
 $this->params['breadcrumbs'][] = $this->title;
-$activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado', 'Cerrado' => 'Cerrado'];
-
 ?>
-<div class="pedido-index">
+<div class="grupo-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-  <!--  <p>
-        <?= Html::a('Create Pedido', ['create'], ['class' => 'btn btn-success']) ?>
-    </p> -->
+    <p>
+        <?= Html::a('Create Grupo', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -30,19 +28,16 @@ $activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado', 'Cerrado' => 'Cerrad
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
             'id',
+            'nombre',
             'restaurante_id',
-            'cliente_id',
-            'valor',
-            'estado',
-           /* [
+            [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Pedido $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Grupo $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
-            */
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],
         ],
     ]); ?>
 

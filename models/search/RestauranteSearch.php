@@ -17,8 +17,8 @@ class RestauranteSearch extends Restaurante
     public function rules()
     {
         return [
-            [['id', 'nit', 'telefono', 'celular', 'total_mesas', 'mensualidad', 'codigo_de_activacion', 'activado', 'usuario_id'], 'integer'],
-            [['nombre', 'email', 'encargado', 'direccion', 'ciudad', 'fecha', 'hora'], 'safe'],
+            [['id', 'total_mesas', 'mensualidad', 'codigo_de_activacion', 'activado', 'usuario_id'], 'integer'],
+            [['nit', 'nombre', 'telefono', 'celular', 'email', 'encargado', 'direccion', 'ciudad', 'fecha', 'hora', 'logo'], 'safe'],
         ];
     }
 
@@ -59,9 +59,6 @@ class RestauranteSearch extends Restaurante
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'nit' => $this->nit,
-            'telefono' => $this->telefono,
-            'celular' => $this->celular,
             'total_mesas' => $this->total_mesas,
             'mensualidad' => $this->mensualidad,
             'codigo_de_activacion' => $this->codigo_de_activacion,
@@ -70,12 +67,16 @@ class RestauranteSearch extends Restaurante
             'fecha' => $this->fecha,
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre])
+        $query->andFilterWhere(['like', 'nit', $this->nit])
+            ->andFilterWhere(['like', 'nombre', $this->nombre])
+            ->andFilterWhere(['like', 'telefono', $this->telefono])
+            ->andFilterWhere(['like', 'celular', $this->celular])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'encargado', $this->encargado])
             ->andFilterWhere(['like', 'direccion', $this->direccion])
             ->andFilterWhere(['like', 'ciudad', $this->ciudad])
-            ->andFilterWhere(['like', 'hora', $this->hora]);
+            ->andFilterWhere(['like', 'hora', $this->hora])
+            ->andFilterWhere(['like', 'logo', $this->logo]);
 
         return $dataProvider;
     }
