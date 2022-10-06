@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name' => 'Mesero Virtual',
+    'name' => ' Mesero Virtual',
     'homeUrl' => 'Home',
     'timezone' => 'America/Bogota',
     'basePath' => dirname(__DIR__),
@@ -30,8 +30,8 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-           // 'class' => \yii\symfonymailer\Mailer::class,
-           'class' => 'yii\swiftmailer\Mailer',
+            'class' => \yii\symfonymailer\Mailer::class,
+          // 'class' => 'yii\swiftmailer\Mailer',
            // 'viewPath' => '@app/mail',
             // send all mails to a file by default.
             'transport' => [

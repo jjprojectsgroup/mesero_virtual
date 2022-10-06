@@ -44,11 +44,11 @@ $grupos = Grupo::find()->all();
             <table class="table table-sm table-striped">
               <thead>
                 <tr>
-                  <th scope="col-auto" width="5%" class="center">#</th>
+                  <th>#</th>
                   <th style=" display:none; ">id.</th>
-                  <th scope="col-auto" class="d-none d-sm-table-cell" width="50%">Descripción</th>
-                  <th scope="col-auto" width="5%" class="text-right">Cant.</th>
-                  <th scope="col-auto" width="40%" class="text-right">Total</th>
+                  <th >Descripción</th>
+                  <th>Cant.</th>
+                  <th >Total</th>
                 </tr>
               </thead>
               <tbody id="cuerpo">
@@ -126,7 +126,7 @@ $grupos = Grupo::find()->all();
 
     var contador = 0;
     var tipoPlato = "Bebidas";
-    var j = 0;
+    var j = 1;
 
     $("#cuerpo").html("");
 

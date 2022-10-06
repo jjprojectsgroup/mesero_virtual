@@ -54,7 +54,8 @@ if(!Yii::$app->user->isGuest){
       $restaurante =  Restaurante::findOne(['usuario_id' => $id]);
     }
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+
+        'brandLabel' => '<img src="img/logo.png" class="pull-left rounded-circle" width="50px"/>'.Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
@@ -62,6 +63,10 @@ if(!Yii::$app->user->isGuest){
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
+            '<li class="nav-item">'
+            . Html::img('img/logo.php',['width'=>'50px','class'=>'rounded-circle mt-5'])
+            . Html::endForm()
+            . '</li>',
             ['label' => 'Home', 'url' => ['/site/index']],
             (!Yii::$app->user->isGuest && $tipo=='0')?(
             ['label' => 'Usuarios', 'url' => ['/user/index']]

@@ -34,7 +34,7 @@ $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
     <div  class="container ">
     <div class="row">
         <div class="col-md-3 ">
-            <div class="d-flex flex-column align-items-center text-center "><?= Html::img($model->logo,['width'=>'150px','class'=>'rounded-circle mt-5']) ?><span class="font-weight-bold"><p></p><?= $form->field($model, 'archivo')->fileInput()->label(false) ?><?php echo $model->nombre ?></span><span class="text-black-50"><?php echo $model->email ?></span><span> </span></div>
+            <div class="d-flex flex-column align-items-center text-center "><?= Html::img($model->logo,['width'=>'150px','class'=>'rounded-circle mt-5','onclick'=>'clicFoto()']) ?><span class="font-weight-bold"><p></p><?= $form->field($model, 'archivo')->fileInput(['id'=>'cargar','style'=>'display:none','onchange'=>'actualizarFoto()'])->label(false) ?><?php echo $model->nombre ?></span><span class="text-black-50"><?php echo $model->email ?></span><span> </span></div>
         
         </div>
         <div class="col-md-6 ">
@@ -66,7 +66,7 @@ $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
                     <?php }?>
                 </div>
                
-                <div class="mt-5 text-center"> <?= Html::submitButton($boton, ['class' => 'btn btn-primary profile-button']) ?></div>
+                <div class="mt-5 text-center"> <?= Html::submitButton($boton, ['class' => 'btn btn-primary profile-button','id'=>'btnActualizar']) ?></div>
             </div>
         </div>
     
@@ -85,6 +85,14 @@ $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
 </div>
 
 <script type="text/javascript">
+function clicFoto(){
+    $('#cargar').click();
+
+}
+function actualizarFoto(){
+    $('#btnActualizar').click();
+
+}
 function validarClic(e) { //impide la entrada por teclado en un input
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==8) return true; //Tecla de retroceso (para poder borrar)
