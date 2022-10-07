@@ -11,11 +11,11 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Pedidos';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 $activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado', 'Cerrado' => 'Cerrado'];
 
 ?>
-<div class="pedido-index">
+<div class="pedido-index" id="div" >
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -24,7 +24,6 @@ $activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado', 'Cerrado' => 'Cerrad
     </p> -->
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -46,5 +45,9 @@ $activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado', 'Cerrado' => 'Cerrad
         ],
     ]); ?>
 
-
 </div>
+<script type="text/javascript">
+
+    setTimeout(function(){ $("#div").load("index.php?r=pedido%2Findex");}, 10000);
+
+</script>

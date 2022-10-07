@@ -38,9 +38,11 @@ $provider = new ActiveDataProvider([
 <div class="pedido-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if( Yii::$app->user->identity->tipo==1){ ?>
+    <?php if( Yii::$app->user->identity!=null && Yii::$app->user->identity->tipo==1){ ?>
     <p>
-      <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    
+      <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+      <?= Html::a('Imprimir', null, ["class" => "btn btn-secondary menuA", 'role' => "button", 'href'=>'javascript:imprSelec("seleccion")']) ?>
        <!--  <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -51,17 +53,18 @@ $provider = new ActiveDataProvider([
     </p>
     <?php } ?>
 
+    <div id="seleccion">
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            'restaurante_id',
+        //    'restaurante_id',
             'cliente_id',
             'valor',
             'estado',
         ],
     ]) ?>
-    
+    <br /><br />
         <?= GridView::widget([
         'dataProvider' => $provider,
         //'filterModel' => $searchModel,
@@ -82,6 +85,16 @@ $provider = new ActiveDataProvider([
           //  ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}']
         ],
     ]); ?>
-
+</div>
 
 </div>
+<script type="text/javascript">
+    	function imprSelec(nombre) {
+	  var ficha = document.getElementById(nombre);
+	  var ventimp = window.open(' ', 'popimpr');
+	  ventimp.document.write( ficha.innerHTML );
+	  ventimp.document.close();
+	  ventimp.print( );
+	  ventimp.close();
+	}
+</script>

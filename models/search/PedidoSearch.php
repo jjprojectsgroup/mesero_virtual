@@ -63,11 +63,11 @@ class PedidoSearch extends Pedido
             return $dataProvider;
         }
 
-        if (Yii::$app->user->identity->tipo==1)
+        if (Yii::$app->user->identity!=null && Yii::$app->user->identity->tipo==1)
         {
             $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
 
-            $query->where(['restaurante_id'=>$usuario->id]);
+            $query->where(['restaurante_id'=>$usuario->id])->orderBy(['id'=> SORT_DESC]);
 
         }
         // grid filtering conditions

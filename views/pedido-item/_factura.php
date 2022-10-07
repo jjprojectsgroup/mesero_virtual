@@ -145,7 +145,7 @@ $grupos = Grupo::find()->all();
         pedido = JSON.parse(pedido);
         var x = 0;
         <?php
-        $menu = Menu::find()->where(['restaurante_id' => 36, 'grupo' => $grupo->id])->all();
+        $menu = Menu::find()->where(['restaurante_id' => $usuario->id, 'grupo' => $grupo->id])->all();
 
         foreach ($menu as $key => $dato) { ?>
           if (pedido[x].cantidad > 0) {

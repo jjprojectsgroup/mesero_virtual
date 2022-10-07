@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Pedido;
 use app\models\search\PedidoSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,17 @@ class PedidoController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['index', 'pedido', 'create', 'update', 'item'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'pedido', 'create', 'update', 'item'],
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

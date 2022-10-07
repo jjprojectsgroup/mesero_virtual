@@ -52,7 +52,7 @@ $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
                     <div class="col-md-12"><label class="labels">Encargado</label><?= $form->field($model, 'encargado')->textInput(['maxlength' => true])->label(false) ?></div>
                     <div class="col-md-12"><label class="labels">Direccion</label><?= $form->field($model, 'direccion')->textInput(['maxlength' => true])->label(false) ?></div>
                     <div class="col-md-12"><label class="labels">Ciudad</label><?= $form->field($model, 'ciudad')->textInput(['maxlength' => true])->label(false) ?></div>
-                    <?php if(Yii::$app->user->isGuest || $tipo!=null && $tipo=='1'  ){?>
+                    <?php if($tipo!=null && $tipo=='0'  ){?>
                    
                    <div class="row mt-3">
                    <div class="col-md-6"><label class="labels">Mesas Totales</label><?= $form->field($model, 'total_mesas')->input('number',['min' => 0, 'onkeypress' => 'return validarClic(event)'])->label(false) ?></div>

@@ -10,17 +10,15 @@ use yii\helpers\Html;
 /** @var app\models\PedidoItem $pedidoItem */
 
 $this->title = 'Mesero Virtual';
-$restauranteId = 16;
+
 $mesaId = 1;
 
-$usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
-
-Yii::$app->cache->set('restauranteId', $restauranteId); // guardar $restauranteId en caché para así recuperarla la próxima vez
-Yii::$app->cache->set('mesaId', $mesaId); // guardar $restauranteId en caché para así recuperarla la próxima vez
+Yii::$app->cache->set('mesaId', $mesaId); // guardar $mesaId en caché para así recuperarla la próxima vez
 
 ?>
 <form action="form.php" method="post" id="form2">
   <div class="menu-form" ALIGN="center">
+
     <br />
     <h1><?= Html::encode($this->title) ?></h1>
     <br />

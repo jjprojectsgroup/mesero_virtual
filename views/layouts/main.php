@@ -6,6 +6,7 @@
 use app\assets\AppAsset;
 use app\models\Cliente;
 use app\models\Restaurante;
+use app\models\User;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -55,7 +56,7 @@ if(!Yii::$app->user->isGuest){
     }
     NavBar::begin([
 
-        'brandLabel' => '<img src="img/logo.png" class="pull-left rounded-circle" width="50px"/>'.Yii::$app->name,
+        'brandLabel' => '<img src="img/logo.png" class="pull-left rounded-circle" width="40px"/>'.Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
@@ -92,7 +93,23 @@ if(!Yii::$app->user->isGuest){
             (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
                 ['label' => 'Pedido Cliente', 'url' => ['/pedido-item/menu']]
             ):(""),
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+        //    ['label' => 'Contact', 'url' => ['/site/contact']],
+        (!Yii::$app->user->isGuest)?(                
+            ['label' => 'Perfil', 'url' => [$ruta, 'id' => $id]]
+            ):(""),
+        Yii::$app->user->isGuest
+            ? ['label' => 'Login', 'url' => ['/site/login']]
+            : '<li class="nav-item">'
+                . Html::beginForm(['/site/logout'])
+                . Html::submitButton(
+                    $usuario!=null?$usuario->nombre!=null?'Cerrar Sesion ('.$usuario->nombre.')':'Cerrar Sesion (' .Yii::$app->user->identity->email . ')':'Cerrar Sesion (ADMIN)',
+                    ['class' => 'nav-link btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>',
+        (Yii::$app->user->isGuest)?(                
+            ['label' => 'Registro', 'url' => ['/user/create']]
+            ):(""),
         ]
     ]);
     echo '</div>';
@@ -100,22 +117,7 @@ if(!Yii::$app->user->isGuest){
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav' ],
         'items' => [
-            (!Yii::$app->user->isGuest)?(                
-                ['label' => 'Perfil', 'url' => [$ruta, 'id' => $id]]
-                ):(""),
-            Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        $usuario->nombre!=null?'Cerrar Sesion ('.$usuario->nombre.')':'Cerrar Sesion (' .Yii::$app->user->identity->email . ')',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>',
-            (Yii::$app->user->isGuest)?(                
-                ['label' => 'Registro', 'url' => ['/user/create']]
-                ):("")    
+    
                 ]
     ]);
     echo '</div>';

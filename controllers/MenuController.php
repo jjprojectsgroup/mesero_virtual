@@ -23,16 +23,17 @@ class MenuController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [   'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                [
-                    'allow' => true,
-                    'roles' => ['@']
-                ]
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@']
+                        ]
+                    ],
                 ],
-            ],
-            
+
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -83,13 +84,13 @@ class MenuController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $model->fecha=date('Y-m-d');
-                $model->hora=date('H:i:s');
+                $model->fecha = date('Y-m-d');
+                $model->hora = date('H:i:s');
                 $restaurante_id = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
-                $model->restaurante_id=$restaurante_id->id;
-                if($model->save()){
+                $model->restaurante_id = $restaurante_id->id;
+                if ($model->save()) {
                     return $this->redirect(['menu/create']);
-                   //return $this->actionCreate();
+                    //return $this->actionCreate();
                 }
             }
         } else {

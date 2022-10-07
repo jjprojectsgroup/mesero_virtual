@@ -34,7 +34,9 @@ $user->generateKey();
 
     <?= $form->field($model, 'access_token')->hiddenInput(['maxlength' => true, 'value' => $user->access_token])->label(false) ?>
 
-    <?= $form->field($model, 'tipo')->dropDownList($tipo, ['prompt' => 'Seleccione Un Tipo De Usuario' ])->label('Tipo de Usuario') ?>
+  <!--  <?php //$form->field($model, 'tipo')->dropDownList($tipo, ['prompt' => 'Seleccione Un Tipo De Usuario' ])->label('Tipo de Usuario') ?> -->
+
+    <?= $form->field($model, 'tipo')->hiddenInput(['value'=>'1'])->label(false) ?>
 
     <div class="form-group">
     <p></p>

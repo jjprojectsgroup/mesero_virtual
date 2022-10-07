@@ -9,8 +9,7 @@ use yii\helpers\Html;
 $grupo = ['Bebidas' => 'Bebidas', 'Entradas' => 'Entradas',  'Platos fuertes' => 'Platos fuertes', 'Postres' => 'Postres'];
 $tipoPlato = Yii::$app->cache->get('tipoPlato');
 $this->title = 'Menu '.$tipoPlato;
-// intenta recuperar $restauranteId de la caché
-$restauranteId = Yii::$app->cache->get('restauranteId');
+
 $mesaId = Yii::$app->cache->get('mesaId');
 
 

@@ -2,7 +2,6 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-
 $config = [
     'id' => 'basic',
     'name' => ' Mesero Virtual',
@@ -29,22 +28,53 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => [
+         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
-          // 'class' => 'yii\swiftmailer\Mailer',
+           //'class' => 'yii\swiftmailer\Mailer',
            // 'viewPath' => '@app/mail',
             // send all mails to a file by default.
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.mailtrap.io',
-                'username' => 'eedbd25cdf97d8',
-                'password' => '2c9a58c78b042b',
-                'port' => '2525',
-                'encryption' => 'tls'
+                'scheme' => 'smtps',
+                'host' => 'smtp.gmail.com',
+                'username' => '',
+                'password' => '',
+                'port' => '587',
+        'encryption' => 'tls', 
+      //  'streamOptions' => [ 'ssl' => [ 'allow_self_signed' => true, 'verify_peer' => false, 'verify_peer_name' => false, ], ],
+              //  'dsn' => 'native://default',
+                
             ],
+           /*  'transport' => [
+                'scheme' => 'smtps',
+                'host' => '',
+                'username' => '',
+                'password' => '',
+                'port' => 465,
+                'dsn' => 'native://default',
+            ],*/
+            
+            'viewPath' => '@app/mail',
+            // send all mails to a file by default. You have to set
+			// 'useFileTransport' to false and configure transport
+			// for the mailer to send real emails.
+
             'useFileTransport' => false,
 
         ],
+
+        /*'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'localhost',
+                'username' => 'username',
+                'password' => 'password',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+        ],
+*/
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

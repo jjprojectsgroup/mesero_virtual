@@ -27,15 +27,17 @@ class UserController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-               /* 'access' => [
-                    'class' => AccessControl::className(),
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['index', 'view'],
                     'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@']
-                    ]
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view'],
+                            'roles' => ['@'],
+                        ],
                     ],
-                ],*/
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

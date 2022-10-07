@@ -15,9 +15,7 @@ use yii\widgets\ActiveForm;
 $tipoPlato = Yii::$app->cache->get('tipoPlato');
 $this->title = 'Menu ' . $tipoPlato;
 
-$restauranteId = Yii::$app->cache->get('restauranteId');
 $mesaId = Yii::$app->cache->get('mesaId');
-$usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
 
 ?>
 <div class="pedido-item-create_pedido">

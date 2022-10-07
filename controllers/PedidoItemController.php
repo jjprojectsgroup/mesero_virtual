@@ -11,6 +11,7 @@ use app\models\search\MenuSearch;
 use app\models\search\PedidoItemSearch;
 use Yii;
 use yii\base\Model;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -28,6 +29,17 @@ class PedidoItemController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['index', 'pedido', 'create', 'update'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'pedido', 'create', 'update'],
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -100,7 +112,9 @@ class PedidoItemController extends Controller
     public function actionPedido()
     {
         $menuModel = new Menu();
-        $menuModel->restaurante_id = 36;
+        $restauranteId = Yii::$app->cache->get('restauranteId');
+
+        $menuModel->restaurante_id = $restauranteId;
 
         $searchModel = new PedidoItemSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -144,7 +158,9 @@ class PedidoItemController extends Controller
     public function actionPedidoBebidas()
     {
         $pedidoItem = new PedidoItem();
-        $menu = Menu::find()->where(['restaurante_id' => 36, 'grupo' => '1'])->all();
+        $restauranteId = Yii::$app->cache->get('restauranteId');
+
+        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '1'])->all();
 
         Yii::$app->cache->set('tipoPlato', 'Bebidas');
         if ($this->request->isPost) {
@@ -164,7 +180,9 @@ class PedidoItemController extends Controller
     public function actionPedidoPlatos()
     {
         $pedidoItem = new PedidoItem();
-        $menu = Menu::find()->where(['restaurante_id' => 36, 'grupo' => '2'])->all();
+        $restauranteId = Yii::$app->cache->get('restauranteId');
+
+        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '2'])->all();
         Yii::$app->cache->set('tipoPlato', 'Platos Fuertes');
         if ($this->request->isPost) {
             if ($pedidoItem->load($this->request->post())) {
@@ -182,7 +200,9 @@ class PedidoItemController extends Controller
 
     public function actionPedidoEntradas()
     {
-        $menu = Menu::find()->where(['restaurante_id' => 36, 'grupo' => '3'])->all();
+        $restauranteId = Yii::$app->cache->get('restauranteId');
+
+        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '3'])->all();
         Yii::$app->cache->set('tipoPlato', 'Entradas');
         $pedidoItem = new PedidoItem();
         if ($this->request->isPost) {
@@ -201,7 +221,9 @@ class PedidoItemController extends Controller
 
     public function actionPedidoPostres()
     {
-        $menu = Menu::find()->where(['restaurante_id' => 36, 'grupo' => '4'])->all();
+        $restauranteId = Yii::$app->cache->get('restauranteId');
+
+        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '4'])->all();
         Yii::$app->cache->set('tipoPlato', 'Postres');
         $pedidoItem = new PedidoItem();
         if ($this->request->isPost) {
@@ -220,17 +242,39 @@ class PedidoItemController extends Controller
 
     public function actionMenu()
     {
-        $model = new Menu();
-        $model->restaurante_id = 36;
+        if (isset($_GET["id"])) {
+            Yii::$app->cache->set('restauranteId', $_GET["id"]);
+            //echo '<script> alert("Primero debe selecionar algun item del menu para poder generar el pedido"); </script>';
+        }
 
-        return $this->render('Menu', [
-            'model' => $model,
-        ]);
+        if (Yii::$app->cache->get('restauranteId') != null) {
+            $restaurante = Restaurante::findOne(['id' => Yii::$app->cache->get('restauranteId')]);
+            if (isset($restaurante->activado)) {
+
+                if ($restaurante->activado == '1') {
+                    $restauranteId = Yii::$app->cache->get('restauranteId');
+
+                    $model = new Menu();
+                    $model->restaurante_id = $restauranteId;
+
+                    return $this->render('Menu', [
+                        'model' => $model,
+                    ]);
+                } else {
+                    throw new NotFoundHttpException('El restaurante solicitado no se encuentra activo.');
+                }
+            } else {
+                throw new NotFoundHttpException('el restaurante solicitado no se encuentra registrado.');
+            }
+        } else {
+            throw new NotFoundHttpException('Enlace no valido.');
+        }
     }
 
     public function actionFacturar()   // almacena el pedido del cliente en base de datos
     {
-        $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
+        $usuario = Restaurante::findOne(['id' => Yii::$app->cache->get('restauranteId')]);
+
 
         $menuFinal = new Factura();
         $pedido = new Pedido();
@@ -253,7 +297,7 @@ class PedidoItemController extends Controller
                             $pedidoItem->save(false);
                         }
                     }
-
+                    Yii::$app->cache->delete('restauranteId');
                     return $this->redirect(['pedido/view', 'id' => $pedido->id]);
                 } else {
                     Yii::$app->session->setFlash('error', 'Primero debe selecionar algun item del menu para poder generar el pedido');
@@ -280,17 +324,17 @@ class PedidoItemController extends Controller
     function createPedido($valor)
     {
         $pedido = new Pedido();
-        $restaurante = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
+        $restaurante = Restaurante::findOne(['id' => Yii::$app->cache->get('restauranteId')]);
         $pedido->restaurante_id = $restaurante->id;
         $pedido->cliente_id = '';
         $pedido->valor = $valor;
-        $pedido->estado = 'activo';
+        $pedido->estado = 'Activo';
         if ($pedido->save(false)) {
-            Yii::$app->mailer->compose()
+            /* Yii::$app->mailer->compose()
                 ->setFrom('jrbgoye@gmail.com')
                 ->setTo('boada1997@gmail.com')
                 ->setSubject('Email sent from Yii2-Swiftmailer')
-                ->send();
+                ->send(); */
             /*   Yii::$app->mailer->compose()
                 ->setTo("jrbgoye@gmail.com")
                 ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])

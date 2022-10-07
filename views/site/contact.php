@@ -7,7 +7,8 @@
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\captcha\Captcha;
-
+use yii\mail\BaseMailer;
+use yii\swiftmailer\Mailer;
 $this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -64,3 +65,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php endif; ?>
 </div>
+<?php 
+/*
+Yii::$app->mailer->compose()
+     ->setFrom('boada1997@gmail.com')
+     ->setTo('jrbgoye@gmail.com')
+     ->setSubject('holaaaa')
+     ->setTextBody('esto es una prueba para facturacion')
+     ->send();
+
+?>*/
