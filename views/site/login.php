@@ -24,26 +24,26 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-        <?= $form->field($model, 'email')->input('email')->label('Correo Electronico') ?>
+    <?= $form->field($model, 'email')->input('email')->label('Correo Electronico') ?>
 
-        <?= $form->field($model, 'password')->passwordInput()->label('Contraseña') ?>
+    <?= $form->field($model, 'password')->passwordInput()->label('Contraseña') ?>
 
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"offset-lg-1 col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ])->label('Recuerdame') ?>
+    <?= $form->field($model, 'rememberMe')->checkbox([
+        'template' => "<div class=\"offset-lg-1 col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
+    ])->label('Recuerdame') ?>
 
-        <div class="form-group">
-            <div class="offset-lg-1 col-lg-11">
-                <p></p>
+    <div class="form-group">
+        <div class="offset-lg-1 col-lg-11">
+            <p></p>
+            <?= Html::submitButton('Ingresar', ['class' => 'btn btn-primary col-lg-3 col-md-3 col-sm-3 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3', 'name' => 'login-button', 'style' => 'float:left;']) ?>
+            <?= Html::a("Registro", ['/user/create'], ['class' => 'btn btn-success col-lg-3 col-md-3 col-sm-3 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3', 'style' => 'float:right;']) ?>
+            <p></p>&nbsp; &nbsp; &nbsp; </br></br>
+        <?php //Html::a("Recuperar Contraseña", ['/site/recoverpass'], ['class' => 'btn btn-success  ', 'style' => 'aling:center;']) ?>
 
-                <?= Html::submitButton('Ingresar', ['class' => 'btn btn-primary col-lg-3 col-md-3 col-sm-3 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3', 'name' => 'login-button', 'style'=>'float:left;']) ?>
-             
 
-                <?= Html::a("Registro", ['/user/create'], ['class' => 'btn btn-success col-lg-3 col-md-3 col-sm-3 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3', 'style'=>'float:right;']) ?>
-          
-            </div>
         </div>
 
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

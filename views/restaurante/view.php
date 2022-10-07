@@ -7,8 +7,8 @@ use yii\widgets\DetailView;
 /** @var app\models\Restaurante $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Restaurantes', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+/*$this->params['breadcrumbs'][] = ['label' => 'Restaurantes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;*/
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="restaurante-view">

@@ -23,7 +23,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     public $rememberMe = true;
     private $_user = false;
-
+    public $verification_code;
     /**
      * {@inheritdoc}
      */

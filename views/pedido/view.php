@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\data\ActiveDataProvider;
+
 /** @var yii\web\View $this */
 /** @var app\models\Pedido $model */
 /** @var app\models\PedidoItem $item */
@@ -15,11 +16,11 @@ use yii\data\ActiveDataProvider;
 
 $this->title = $model->id;
 /*$this->params['breadcrumbs'][] = ['label' => 'Pedidos', 'url' => ['index']];*/
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 //$item=PedidoItem::findOne(['pedido_id' => $model->id]);
 
-    $query = PedidoItem::find()->where(['pedido_id' => $model->id]);
+$query = PedidoItem::find()->where(['pedido_id' => $model->id]);
 
 
 $provider = new ActiveDataProvider([
@@ -27,7 +28,7 @@ $provider = new ActiveDataProvider([
     'pagination' => [
         'pageSize' => 10,
     ],
-   /* 'sort' => [
+    /* 'sort' => [
         'defaultOrder' => [
             'created_at' => SORT_DESC,
             'title' => SORT_ASC,
@@ -36,65 +37,68 @@ $provider = new ActiveDataProvider([
 ]);
 ?>
 <div class="pedido-view">
-
+    <br>
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if( Yii::$app->user->identity!=null && Yii::$app->user->identity->tipo==1){ ?>
-    <p>
-    
-      <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-      <?= Html::a('Imprimir', null, ["class" => "btn btn-secondary menuA", 'role' => "button", 'href'=>'javascript:imprSelec("seleccion")']) ?>
-       <!--  <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?> -->
-    </p>
+
+
+    <?php if (Yii::$app->user->identity != null && Yii::$app->user->identity->tipo == 1) { ?>
+        <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Menú', ['pedido/index'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+
+        <p>
+            <!--  <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to delete this item?',
+                            'method' => 'post',
+                        ],
+                    ]) ?> -->
+        </p>
     <?php } ?>
-
+    <p></p>
     <div id="seleccion">
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-        //    'restaurante_id',
-            'cliente_id',
-            'valor',
-            'estado',
-        ],
-    ]) ?>
-    <br /><br />
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                //    'restaurante_id',
+                //'cliente_id',
+                'valor',
+                'estado',
+            ],
+        ]) ?>
+        <br /><br />
         <?= GridView::widget([
-        'dataProvider' => $provider,
-        //'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            'dataProvider' => $provider,
+            //'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-           // 'id',
-           // 'pedido_id',
-            'menu_id',
-            'cantidad',
-            'valor',
-          /*  [
+                // 'id',
+                // 'pedido_id',
+                'menu_id',
+                'cantidad',
+                'valor',
+                /*  [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, PedidoItem $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],*/
-          //  ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}']
-        ],
-    ]); ?>
-</div>
+                //  ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}']
+            ],
+        ]); ?>
+    </div>
+    <?= Html::a('Imprimir', null, ["class" => "btn btn-secondary menuA", 'role' => "button", 'href' => 'javascript:imprSelec("seleccion")']) ?>
 
 </div>
 <script type="text/javascript">
-    	function imprSelec(nombre) {
-	  var ficha = document.getElementById(nombre);
-	  var ventimp = window.open(' ', 'popimpr');
-	  ventimp.document.write( ficha.innerHTML );
-	  ventimp.document.close();
-	  ventimp.print( );
-	  ventimp.close();
-	}
+    function imprSelec(nombre) {
+        var ficha = document.getElementById(nombre);
+        var ventimp = window.open(' ', 'popimpr');
+        ventimp.document.write(ficha.innerHTML);
+        ventimp.document.close();
+        ventimp.print();
+        ventimp.close();
+    }
 </script>

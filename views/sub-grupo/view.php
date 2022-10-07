@@ -7,8 +7,8 @@ use yii\widgets\DetailView;
 /** @var app\models\SubGrupo $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Sub Grupos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+/*$this->params['breadcrumbs'][] = ['label' => 'Sub Grupos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;*/
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="sub-grupo-view">

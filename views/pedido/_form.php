@@ -25,7 +25,7 @@ $activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado'];
 ]);?>
     <?= $form->field($model, 'restaurante_id')->textInput(['readonly'=> $readonly]) ?>
 
-    <?= $form->field($model, 'cliente_id')->textInput(['readonly'=> $readonly]) ?>
+   <!-- <?= $form->field($model, 'cliente_id')->textInput(['readonly'=> $readonly]) ?> -->
 
     <?= $form->field($model, 'valor')->textInput(['readonly'=> $readonly]) ?>
 
@@ -34,6 +34,8 @@ $activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado'];
     <div class="form-group">
         <p></p>
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Menú', ['pedido/index'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+
     </div>
 
     <?php ActiveForm::end(); ?>

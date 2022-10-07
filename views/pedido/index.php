@@ -31,7 +31,7 @@ $activado = [ 'Activo' => 'Activo', 'Cerrado' => 'Cerrado', 'Cerrado' => 'Cerrad
             ['class' => 'yii\grid\SerialColumn'],
             'id',
             'restaurante_id',
-            'cliente_id',
+          //  'cliente_id',
             'valor',
             'estado',
            /* [

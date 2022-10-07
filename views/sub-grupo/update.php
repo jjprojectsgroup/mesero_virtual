@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\SubGrupo $model */
 
-$this->title = 'Update Sub Grupo: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Sub Grupos', 'url' => ['index']];
+$this->title = 'Actualizar Sub Grupo: ' . $model->nombre;
+/*$this->params['breadcrumbs'][] = ['label' => 'Sub Grupos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Actualizar';
+$this->params['breadcrumbs'][] = 'Actualizar';*/
 ?>
 <div class="sub-grupo-update">
 
