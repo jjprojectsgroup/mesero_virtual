@@ -3,7 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $config = [
-    'id' => 'basic',
+    'id' => 'meserovirtual.com',
     'name' => ' Mesero Virtual',
     'homeUrl' => 'Home',
     'timezone' => 'America/Bogota',

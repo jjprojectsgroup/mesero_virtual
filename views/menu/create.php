@@ -14,7 +14,7 @@ use yii\widgets\DetailView;
 $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
 $searchModel = new MenuSearch();
 
-$columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', 'nombre', 'descripcion', 'precio'/*, 'fecha', 'hora'*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],];
+$columns = [['class' => 'yii\grid\SerialColumn'], 'id', 'grupo', 'nombre', 'descripcion', 'precio'/*, 'fecha', 'hora'*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],];
 $query = Menu::find()->where(['restaurante_id' => $usuario->id]);
 
 $this->title = 'Crear Menú';
@@ -24,15 +24,26 @@ $this->title = 'Crear Menú';
     $provider = new ActiveDataProvider([
         'query' => $query,
         'pagination' => [
-            'pageSize' => 10,
+            'pageSize' => 30,
         ],
-       /* 'sort' => [
+        'sort' => [
             'defaultOrder' => [
-                'created_at' => SORT_DESC,
-                'title' => SORT_ASC,
+                'id' => SORT_DESC,
             ]
-        ],*/
+        ],
     ]);
+ /*   $provider->setSort([
+        'attributes' => [
+            'id' => [
+                'asc' => ['id' => SORT_ASC],
+                'desc' => ['id' => SORT_DESC],
+                'default' => SORT_ASC
+            ],
+        ],
+        'defaultOrder' => [
+            'id' => SORT_DESC
+        ]
+    ]);*/
 ?>
 <div class="menu-create">
 

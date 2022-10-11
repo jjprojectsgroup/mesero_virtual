@@ -5,6 +5,8 @@ namespace app\models\search;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Grupo;
+use app\models\Restaurante;
+use Yii;
 
 /**
  * GrupoSearch represents the model behind the search form of `app\models\Grupo`.
@@ -55,7 +57,10 @@ class GrupoSearch extends Grupo
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        if (Yii::$app->user->identity != null && Yii::$app->user->identity->tipo == 1) {
+            $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
+            $query->where(['restaurante_id' => [$usuario->id]])->orderBy(['id' => SORT_ASC]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

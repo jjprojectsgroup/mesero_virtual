@@ -46,6 +46,9 @@ class MenuSearch extends Menu
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 25,
+            ],
         ]);
 
         $this->load($params);

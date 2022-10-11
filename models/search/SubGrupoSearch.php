@@ -2,9 +2,11 @@
 
 namespace app\models\search;
 
+use app\models\Restaurante;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\SubGrupo;
+use Yii;
 
 /**
  * SubGrupoSearch represents the model behind the search form of `app\models\SubGrupo`.
@@ -54,6 +56,10 @@ class SubGrupoSearch extends SubGrupo
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
+        }
+        if (Yii::$app->user->identity != null && Yii::$app->user->identity->tipo == 1) {
+            $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
+            $query->where(['restaurante_id' => [$usuario->id]])->orderBy(['id' => SORT_ASC]);
         }
 
         // grid filtering conditions

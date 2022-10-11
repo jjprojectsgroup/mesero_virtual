@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Grupo', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Grupo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -31,13 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'nombre',
-            'restaurante_id',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Grupo $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
+            //'restaurante_id',
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],
         ],
     ]); ?>
 

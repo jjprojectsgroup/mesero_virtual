@@ -8,8 +8,8 @@ use yii\widgets\DetailView;
 /** @var app\models\Menu $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+/*$this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;*/    
 \yii\web\YiiAsset::register($this);
 
 ?>

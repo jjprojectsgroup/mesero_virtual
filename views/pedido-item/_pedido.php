@@ -3,6 +3,7 @@
 use app\models\Menu;
 use app\models\PedidoItem;
 use app\models\Restaurante;
+use app\models\SubGrupo;
 use PhpParser\Node\Stmt\Label;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -17,14 +18,21 @@ $this->title = 'Menu ' . $tipoPlato;
 
 $mesaId = Yii::$app->cache->get('mesaId');
 
+$nombreSubGrupo = SubGrupo::find()->where(['restaurante_id' => Yii::$app->cache->get('restauranteId')])->all();
+$menuSubGupo = array();
+foreach ($menu as $k => $item) {
+  $subGrupo = $item->sub_grupo;
+  unset($item->sub_grupo);
+  $menuSubGupo[$subGrupo][] = $item;
+}
+$nombre = "otros";
+$contadorItem = 0;
 ?>
 <div class="pedido-item-create_pedido">
-
+  <br>
   <h1 ALIGN="center"><?= Html::encode($this->title) ?></h1>
-
-
+  <br>
   <div class="menu-form" ALIGN="center">
-
     <div ALIGN="center" class="container">
       <div class="row justify-content-center">
         <div class="col-auto">
@@ -36,21 +44,38 @@ $mesaId = Yii::$app->cache->get('mesaId');
               <th style=" width:25%;"> Precio</th>
               <th style=" width:25%;"> Total</th>
             </TR>
-            <?php foreach ($menu as $key => $item) { ?>
-              <?php $form = ActiveForm::begin(); ?>
+            <?php foreach ($menuSubGupo as $k => $items) { ?>
 
               <TR>
-                <td style=" width:25%;"><?= Html::label($item->nombre, null, ['id' => 'descripcion' . $key]) ?></td>
-                <td style=" width:25%;"><?= $form->field($pedidoItem, 'cantidad')->textInput(['type' => 'number', 'value' => 0, 'id' => 'cantidad' . $key, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $key . ');', 'min' => 0, 'onkeypress' => 'return validarClic(event)'])->label(false) ?> </td>
-                <td style=" display:none;"><?= $form->field($pedidoItem, 'menu_id')->textInput(['value' => $item->id, 'id' => 'menu_id' . $key])->Label(false) ?> </td>
-                <td style=" width:25%;"><?= Html::label($item->precio, null, ['id' => 'precioU' . $key]) ?></td>
-                <td style=" width:25%;"><?= $form->field($pedidoItem, 'valor')->textInput(['value' => '0', 'id' => 'totalUAux' . $key, 'style' => 'display:none;'])->Label(false) ?><?= Html::label('$0.00', null, ['id' => 'totalU' . $key]) ?></td>
+                <?php foreach ($nombreSubGrupo as $key => $item) {
+                  if ($item->id == $k) {
+                    $nombre = $item->nombre;
+                    break;
+                  } elseif ($key == count($nombreSubGrupo) - 1) {
+                    $nombre = "otros";
+                  }
+                } ?>
+                <th COLSPAN="4" style="text-align: center;">
+                  <h3><?= Html::label(ucfirst($nombre)) ?></h3>
+                </th>
               </TR>
+              <?php foreach ($items as $key => $item) { ?>
+              <?php if ($item->stock=='Agotado' || $item->estado=='Inactivo') {continue;} ?>
+
+                <?php $form = ActiveForm::begin(); ?>
+                <TR>
+                  <td style=" width:25%;"><?= Html::label(ucfirst($item->nombre), null, ['id' => 'descripcion' . $contadorItem]) ?></td>
+                  <td style=" width:25%;"><?= $form->field($pedidoItem, 'cantidad')->textInput(['type' => 'number', 'value' => 0, 'id' => 'cantidad' . $contadorItem, 'style' => 'width:80%', 'onblur' => 'calculoUnitario(' . $contadorItem . ');', 'min' => 0, 'oncontadorItempress' => 'return validarClic(event)'])->label(false) ?> </td>
+                  <td style=" display:none;"><?= $form->field($pedidoItem, 'menu_id')->textInput(['value' => $item->id, 'id' => 'menu_id' . $contadorItem])->Label(false) ?> </td>
+                  <td style=" width:25%;"><?= Html::label($item->precio, null, ['id' => 'precioU' . $contadorItem]) ?></td>
+                  <td style=" width:25%;"><?= $form->field($pedidoItem, 'valor')->textInput(['value' => '0', 'id' => 'totalUAux' . $contadorItem, 'style' => 'display:none;'])->Label(false) ?><?= Html::label('$0.00', null, ['id' => 'totalU' . $contadorItem]) ?></td>
+                </TR>
         </div>
-        <?php ActiveForm::end(); ?>
-      <?php }
-      ?>
-      </table>
+        <?php ActiveForm::end();
+                $contadorItem++; ?>
+      <?php } ?>
+    <?php  } ?>
+    </table>
       </div>
     </div>
   </div>
@@ -64,11 +89,7 @@ $mesaId = Yii::$app->cache->get('mesaId');
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <p></p>
-
-
-
   <br /><br /><br />
-
 </div>
 
 <script type="text/javascript">
@@ -93,14 +114,6 @@ $mesaId = Yii::$app->cache->get('mesaId');
     document.getElementById("totalUAux" + id).value = cantidad * precio;
     // calculoTotal();
   }
-
-  /* function calculoTotal() { //calcula el valor total referrente a el menu
-     var rowCount = $("#tablaMenu tr").length;
-     var total = 0;
-     for (var i = 0; i < rowCount-2; i++) {
-       total += Number(document.getElementById("totalUAux" + i).innerHTML);
-     }
-   }*/
 
 
   function validarClic(e) { //impide la entrada por teclado en un input
@@ -129,6 +142,7 @@ $mesaId = Yii::$app->cache->get('mesaId');
     var pedido1 = [];
     // var precioPedido=0;
     <?php foreach ($menu as $key => $dato) { ?>
+      console.log(i);
       pedido1.push({
         'id': document.getElementById("menu_id" + i).value,
         'descripcion': document.getElementById("descripcion" + i).innerHTML,
@@ -143,7 +157,7 @@ $mesaId = Yii::$app->cache->get('mesaId');
      sessionStorage.setItem("totalPedido", valorActual!=null?valorActual:0 + precioPedido);
      console.log("totalPedido: " + valorActual);*/
 
-   // reload();
+    // reload();
   }
 
   function borrarDatos() { //borra datos del menu de la sesion actual
@@ -171,5 +185,4 @@ $mesaId = Yii::$app->cache->get('mesaId');
 
     //calculoTotal();
   }
-
 </script>

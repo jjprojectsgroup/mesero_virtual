@@ -3,8 +3,8 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=mesero_virtual',
-    'username' => 'MeseroAdmin',
-    'password' => 'MeseroAdmin2022$',
+    'username' => 'meseroadmin',
+    'password' => 'Mesero_2022$',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

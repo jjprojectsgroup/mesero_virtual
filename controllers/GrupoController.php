@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\models\Grupo;
+use app\models\Restaurante;
 use app\models\search\GrupoSearch;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -78,10 +80,17 @@ class GrupoController extends Controller
     public function actionCreate()
     {
         $model = new Grupo();
-
+        $restaurante=null;
+        if (Yii::$app->user->identity != null && Yii::$app->user->identity->tipo == 1) {
+            $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
+            $restaurante= $usuario->id;
+        }
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post()) ) {
+                $model->restaurante_id=$restaurante;
+                if($model->save()){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();

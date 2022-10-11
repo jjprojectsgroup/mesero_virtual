@@ -11,18 +11,44 @@ use yii\widgets\ActiveForm;
 /** @var app\models\Menu $model */
 /** @var yii\widgets\ActiveForm $form */
 //$grupo = [ 'Bebidas' => 'Bebidas', 'Entradas' => 'Entradas',  'Platos fuertes' => 'Platos fuertes', 'Postres' => 'Postres'];
+$existencia = ['En existencia' => 'En existencia', 'Agotado' => 'Agotado'];
+$activo = ['Activo' => 'Activo', 'Inactivo' => 'Inactivo'];
+$subGrupos = SubGrupo::find()->all();
 $grupos = Grupo::find()->all();
 $nombreGrupos = null;
-foreach ($grupos as $key => $grupo) {
-  $nombreGrupos[$grupo->id] = $grupo->nombre;
-}
+$nombreSubGrupos =  null;
+
 $usuario = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
 
 $subGrupos = SubGrupo::find()->where(['restaurante_id' => $usuario->id])->all();
-$nombreSubGrupo = null;
-foreach ($subGrupos as $key => $subGrupo) {
-  $nombreSubGrupo[$subGrupo->id] = $subGrupo->nombre;
+
+if (Yii::$app->user->identity->tipo == 1) {
+  foreach ($grupos as $key => $grupo) {
+    if ($grupo->restaurante_id == $usuario->id || $grupo->restaurante_id == null) {
+      $nombreGrupos[$grupo->id] = $grupo->nombre;
+    }
+  }
+  if ($subGrupos != null) {
+    foreach ($subGrupos as $key => $subGrupo) {
+      if ($subGrupo->restaurante_id == $usuario->id) {
+        $nombreSubGrupos[$subGrupo->id] = $subGrupo->nombre;
+      }
+    }
+  }
+} else {
+  foreach ($grupos as $key => $grupo) {
+    $nombreGrupos[$grupo->id] = $grupo->nombre;
+  }
+  if ($subGrupos != null) {
+    foreach ($subGrupos as $key => $subGrupo) {
+      $nombreSubGrupos[$subGrupo->id] = $subGrupo->nombre;
+    }
+  }
 }
+
+/*foreach ($subGrupos as $key => $subGrupo) {
+  $nombreSubGrupos[$subGrupo->id] = $subGrupo->nombre;
+}*/
 ?>
 <div class="menu-form">
   <?php $form = ActiveForm::begin([
@@ -35,11 +61,14 @@ foreach ($subGrupos as $key => $subGrupo) {
     ],
   ]); ?>
 
-  <?= $form->field($model, 'grupo')->dropDownList($nombreGrupos, ['prompt' => 'Seleccione un Grupo', 'id' => 'option', 'onchange' => 'almacenar()']) ?>
+  <?= $form->field($model, 'grupo')->dropDownList($nombreGrupos, ['prompt' => 'Seleccione un Grupo', 'id' => 'option', 'onchange' => 'almacenar();cambiarSubgrupos()']) ?>
+  <?php if (isset($nombreSubGrupos)) { ?>
+    <?= $form->field($model, 'sub_grupo')->dropDownList($nombreSubGrupos, ['prompt' => 'Seleccione un Sub-Grupo', 'id' => 'subOption', 'onchange' => 'almacenar()']) ?>
 
-  <?= $form->field($model, 'sub_grupo')->dropDownList($nombreSubGrupo, ['prompt' => 'Seleccione un Sub-Grupo', 'id' => 'subOption', 'onchange' => 'almacenar()']) ?>
+  <?php } ?>
 
-  <!--  <?= $form->field($model, 'restaurante_id')->textInput() ?>-->
+
+  <!-- <?= $form->field($model, 'restaurante_id')->textInput() ?>-->
 
   <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
@@ -51,9 +80,9 @@ foreach ($subGrupos as $key => $subGrupo) {
 
     <?= $form->field($model, 'hora')->textInput(['maxlength' => true]) ?> -->
 
-  <?= $form->field($model, 'stock')->textInput(['maxlength' => true]) ?>
+  <?= $form->field($model, 'stock')->dropDownList($existencia) ?>
 
-  <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
+  <?= $form->field($model, 'estado')->dropDownList($activo) ?>
 
   <div class="form-group">
     <p></p>
@@ -65,6 +94,7 @@ foreach ($subGrupos as $key => $subGrupo) {
   <?php ActiveForm::end(); ?>
 
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script type="text/javascript">
   function almacenar() { // obtiene el id del dropDownList seleccionado al enviar el formulario, lo almacena en la menoria y lo vuelve a selecionar al cargar el formulario
@@ -72,12 +102,28 @@ foreach ($subGrupos as $key => $subGrupo) {
     var subOption = document.getElementById("subOption");
     sessionStorage.setItem("grupoMenu", option.value);
     sessionStorage.setItem("subGrupoMenu", subOption.value);
-
   }
 
   if (sessionStorage.getItem("grupoMenu") != null) {
     document.getElementById("option").value = sessionStorage.getItem("grupoMenu");
-    document.getElementById("subOption").value = sessionStorage.getItem("subGrupoMenu");
+  cambiarSubgrupos();
+  document.getElementById("subOption").value = sessionStorage.getItem("subGrupoMenu");
+
+  }
+
+  function cambiarSubgrupos() {
+    var option = document.getElementById("option");
+    $("#subOption").find('option').not(':first').remove();
+    $("#subOption").val($("#subOption option:first").val());
+    var array = [];
+  <?php  if ($subGrupos != null) {
+    foreach ($subGrupos as $key => $subGrupo) { ?>
+      if ('<?= $subGrupo->restaurante_id ?>' == '<?=$usuario->id?>' && '<?=$subGrupo->grupo_id?>' == option.value ) { 
+      document.getElementById("subOption").innerHTML += "<option value='" + '<?=$subGrupo->id?>' + "'>" + '<?=$subGrupo->nombre?>' + "</option>";
+    }
+   <?php }  } else{ ?>
+    $("#subOption").val($("#subOption option:first").val());
+    <?php }  ?>
 
   }
 

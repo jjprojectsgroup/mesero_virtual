@@ -80,7 +80,10 @@ if(!Yii::$app->user->isGuest){
             ):(""),
             (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
                 ['label' => 'Sub-Grupos', 'url' => ['/sub-grupo/index']]
-            ):(""),
+            ):(""), 
+            (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
+                ['label' => 'Grupos', 'url' => ['/grupo/index']]
+            ):(""), 
             (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
                 ['label' => 'Pedido', 'url' => ['/pedido/index']]
             ):(""),

@@ -155,76 +155,13 @@ class PedidoItemController extends Controller
         }
     }
 
-    public function actionPedidoBebidas()
-    {
-        $pedidoItem = new PedidoItem();
-        $restauranteId = Yii::$app->cache->get('restauranteId');
-
-        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '1'])->all();
-
-        Yii::$app->cache->set('tipoPlato', 'Bebidas');
-        if ($this->request->isPost) {
-            if ($pedidoItem->load($this->request->post())) {
-                $pedidoItem->pedido_id = 1;
-                Yii::$app->cache->set('menuBebidas' . $pedidoItem->menu_id, $pedidoItem);
-                //$pedidoItem->save(false);
-                return $this->redirect(['/pedido-item/menu']);
-            }
-        }
-        return $this->render('create_pedido', [
-            'pedidoItem' => $pedidoItem,
-            'menu' => $menu,
-        ]);
-    }
-
-    public function actionPedidoPlatos()
-    {
-        $pedidoItem = new PedidoItem();
-        $restauranteId = Yii::$app->cache->get('restauranteId');
-
-        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '2'])->all();
-        Yii::$app->cache->set('tipoPlato', 'Platos Fuertes');
-        if ($this->request->isPost) {
-            if ($pedidoItem->load($this->request->post())) {
-                $pedidoItem->pedido_id = 1;
-                Yii::$app->cache->set('menuPlatos' . $pedidoItem->menu_id, $pedidoItem);
-                //$pedidoItem->save(false);
-                //return $this->redirect(['pedido/view', 'id' => 1]);
-            }
-        }
-        return $this->render('create_pedido', [
-            'pedidoItem' => $pedidoItem,
-            'menu' => $menu,
-        ]);
-    }
-
-    public function actionPedidoEntradas()
+    public function actionGrupo($id, $nombre)
     {
         $restauranteId = Yii::$app->cache->get('restauranteId');
 
-        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '3'])->all();
-        Yii::$app->cache->set('tipoPlato', 'Entradas');
-        $pedidoItem = new PedidoItem();
-        if ($this->request->isPost) {
-            if ($pedidoItem->load($this->request->post())) {
-                $pedidoItem->pedido_id = 1;
-                Yii::$app->cache->set('menuPlatos' . $pedidoItem->menu_id, $pedidoItem);
-                //$pedidoItem->save(false);
-                //return $this->redirect(['pedido/view', 'id' => 1]);
-            }
-        }
-        return $this->render('create_pedido', [
-            'pedidoItem' => $pedidoItem,
-            'menu' => $menu,
-        ]);
-    }
-
-    public function actionPedidoPostres()
-    {
-        $restauranteId = Yii::$app->cache->get('restauranteId');
-
-        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => '4'])->all();
-        Yii::$app->cache->set('tipoPlato', 'Postres');
+        $menu = Menu::find()->where(['restaurante_id' => $restauranteId, 'grupo' => $id])->all();
+        $nombre = explode("-", $nombre);
+        Yii::$app->cache->set('tipoPlato', $nombre[0]);
         $pedidoItem = new PedidoItem();
         if ($this->request->isPost) {
             if ($pedidoItem->load($this->request->post())) {
@@ -250,7 +187,6 @@ class PedidoItemController extends Controller
         if (Yii::$app->cache->get('restauranteId') != null) {
             $restaurante = Restaurante::findOne(['id' => Yii::$app->cache->get('restauranteId')]);
             if (isset($restaurante->activado)) {
-
                 if ($restaurante->activado == '1') {
                     $restauranteId = Yii::$app->cache->get('restauranteId');
 
