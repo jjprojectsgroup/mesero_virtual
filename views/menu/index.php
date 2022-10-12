@@ -35,3 +35,9 @@ $columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', /*'sub_grupo
 
 
 </div>
+<style>
+    .page-link.active,
+    .active>.page-link {
+        background-color: #aec1dd;
+    }
+</style>

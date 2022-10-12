@@ -14,7 +14,7 @@ use yii\data\ActiveDataProvider;
 /** @var app\models\search\PedidoItemSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = $model->id;
+$this->title = 'Pedido'; //$model->id;
 /*$this->params['breadcrumbs'][] = ['label' => 'Pedidos', 'url' => ['index']];*/
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -38,7 +38,7 @@ $provider = new ActiveDataProvider([
 ?>
 <div class="pedido-view">
     <br>
-    <h1><?= Html::encode($this->title) ?></h1>
+  <!--  <h1><?= Html::encode($this->title) ?></h1> -->
 
 
     <?php if (Yii::$app->user->identity != null && Yii::$app->user->identity->tipo == 1) { ?>
@@ -60,7 +60,7 @@ $provider = new ActiveDataProvider([
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'id',
+                //'id',
                 //    'restaurante_id',
                 //'cliente_id',
                 'valor',
@@ -90,7 +90,7 @@ $provider = new ActiveDataProvider([
         ]); ?>
     </div>
     <?= Html::a('Imprimir', null, ["class" => "btn btn-secondary menuA", 'role' => "button", 'href' => 'javascript:imprSelec("seleccion")']) ?>
-    <?= Html::a('Nuevo pedido', ['/pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role' => "button", 'onclick' => Yii::$app->cache->set('restauranteId',Yii::$app->cache->get('restauranteProvicional'))]) ?>
+    <?= Html::a('Nuevo pedido', ['/pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role' => "button", 'onclick' => Yii::$app->cache->set('restauranteId', Yii::$app->cache->get('restauranteProvicional'))]) ?>
 
 </div>
 <script type="text/javascript">
@@ -103,3 +103,9 @@ $provider = new ActiveDataProvider([
         ventimp.close();
     }
 </script>
+<style>
+    .page-link.active,
+    .active>.page-link {
+        background-color: #aec1dd;
+    }
+</style>

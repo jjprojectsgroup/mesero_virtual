@@ -38,3 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+<style>
+    .page-link.active,
+    .active>.page-link {
+        background-color: #aec1dd;
+    }
+</style>
