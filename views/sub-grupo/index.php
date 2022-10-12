@@ -11,6 +11,11 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Sub Grupos';
+if(Yii::$app->user->identity->tipo=='0'){
+    $columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'nombre', 'grupo_id', 'restaurante_id',['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],];
+    }elseif(Yii::$app->user->identity->tipo=='1'){	
+    $columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'nombre', 'grupo_id', /*'restaurante_id', */ ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],];
+    }
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sub-grupo-index">
@@ -26,16 +31,7 @@ $this->title = 'Sub Grupos';
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'nombre',
-            'grupo_id',
-            'restaurante_id',
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],
-
-        ],
+        'columns' => $columns,
     ]); ?>
 
 

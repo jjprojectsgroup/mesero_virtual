@@ -42,6 +42,8 @@ if (Yii::$app->user->identity->tipo == 1) {
     <p></p>
     <div class="form-group">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Menú', ['sub-grupo/index'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+
     </div>
 
     <?php ActiveForm::end(); ?>

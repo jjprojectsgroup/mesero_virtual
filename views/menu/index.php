@@ -11,12 +11,11 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Menus';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 if(Yii::$app->user->identity->tipo=='0'){
 $columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', 'restaurante_id', 'nombre', 'descripcion', 'precio'/*, 'fecha', 'hora', 'stock', 'estado', 'sub_grupo',*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],];
 }elseif(Yii::$app->user->identity->tipo=='1'){	
-$columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', 'sub_grupo', /*'restaurante_id',*/ 'nombre', 'descripcion', 'precio', 'stock', 'estado'/*, 'fecha', 'hora'*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],];
-
+$columns = [['class' => 'yii\grid\SerialColumn'],/*'id',*/ 'grupo', /*'sub_grupo', 'restaurante_id',*/ 'nombre', /*'descripcion', */ 'precio', 'stock', 'estado'/*, 'fecha', 'hora'*/,['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update}'],];
 }
 ?>
 <div class="menu-index">

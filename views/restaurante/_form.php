@@ -16,6 +16,11 @@ $readonly=true;
 $tipo=Yii::$app->user->identity->tipo;
 }
 $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
+$ciudades= ['APARTADÓ'=>'APARTADÓ', 'ARMENIA'=>'ARMENIA', 'BARRANCABERMEJA'=>'BARRANCABERMEJA', 'BARRANQUILLA'=>'BARRANQUILLA', 'BELLO'=>'BELLO', 'BOGOTÁ'=>'BOGOTÁ', 'BUCARAMANGA'=>'BUCARAMANGA', 'BUENAVENTURA'=>'BUENAVENTURA', 'CALÍ'=>'CALÍ', 'CARTAGENA'=>'CARTAGENA', 
+'CARTAGO'=>'CARTAGO', 'CAUCASIA'=>'CAUCASIA', 'CHÍA'=>'CHÍA', 'CIÉNAGA'=>'CIÉNAGA', 'CÚCUTA'=>'CÚCUTA', 'DOSQUEBRADAS'=>'DOSQUEBRADAS', 'DUITAMA'=>'DUITAMA', 'ENVIGADO'=>'ENVIGADO', 'FACATATIVÁ'=>'FACATATIVÁ', 'FLORENCIA'=>'FLORENCIA', 'FLORIDABLANCA'=>'FLORIDABLANCA', 'FUSAGASUGÁ'=>'FUSAGASUGÁ', 
+'GIRARDOT'=>'GIRARDOT', 'GIRÓN'=>'GIRÓN', 'GUADALAJARA DE BUGA'=>'GUADALAJARA DE BUGA', 'IBAGUÉ'=>'IBAGUÉ', 'IPIALES'=>'IPIALES', 'ITAGUI'=>'ITAGUI', 'JAMUNDI'=>'JAMUNDI', 'LORICA'=>'LORICA', 'MAGANGUÉ'=>'MAGANGUÉ', 'MAICAO'=>'MAICAO', 'MALAMBO'=>'MALAMBO', 'MANIZALES'=>'MANIZALES', 'MEDELLÍN'=>'MEDELLÍN', 
+'MONTERÍA'=>'MONTERÍA', 'NEIVA'=>'NEIVA', 'OCAÑA'=>'OCAÑA', 'PALMIRA'=>'PALMIRA', 'PASTO'=>'PASTO', 'PEREIRA'=>'PEREIRA', 'PIEDECUESTA'=>'PIEDECUESTA', 'PITALITO'=>'PITALITO', 'POPAYÁN'=>'POPAYÁN', 'QUIBDÓ'=>'QUIBDÓ', 'RIOHACHA'=>'RIOHACHA', 'RIONEGRO'=>'RIONEGRO', 'SAN ANDRÉS DE TUMACO'=>'SAN ANDRÉS DE TUMACO',
+'SANTA MARTA'=>'SANTA MARTA', 'SINCELEJO'=>'SINCELEJO', 'SOACHA'=>'SOACHA', 'SOGAMOSO'=>'SOGAMOSO', 'SOLEDAD'=>'SOLEDAD', 'TULUÁ'=>'TULUÁ', 'TUNJA'=>'TUNJA', 'TURBO'=>'TURBO', 'URIBIA'=>'URIBIA', 'VALLEDUPAR'=>'VALLEDUPAR', 'VILLAVICENCIO'=>'VILLAVICENCIO', 'YOPAL'=>'YOPAL', 'YUMBO'=>'YUMBO', 'ZIPAQUIRÁ'=>'ZIPAQUIRÁ'];
 
 ?>
 
@@ -51,7 +56,7 @@ $activado = [ 0 => 'Desactivado', 1 => 'Activado'];
                     <div class="col-md-12"><label class="labels">Celular</label><?= $form->field($model, 'celular')->input('number',['min' => 0, 'onkeypress' => 'return validarClic(event)'])->label(false) ?></div>
                     <div class="col-md-12"><label class="labels">Encargado</label><?= $form->field($model, 'encargado')->textInput(['maxlength' => true])->label(false) ?></div>
                     <div class="col-md-12"><label class="labels">Direccion</label><?= $form->field($model, 'direccion')->textInput(['maxlength' => true])->label(false) ?></div>
-                    <div class="col-md-12"><label class="labels">Ciudad</label><?= $form->field($model, 'ciudad')->textInput(['maxlength' => true])->label(false) ?></div>
+                    <div class="col-md-12"><label class="labels">Ciudad</label><?= $form->field($model, 'ciudad')->dropDownList($ciudades)->label(false) ?></div>
                     <?php if($tipo!=null && $tipo=='0'  ){?>
                    
                    <div class="row mt-3">

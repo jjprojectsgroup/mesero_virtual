@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /** @var app\models\PedidoItem $pedidoItem */
 /** @var app\models\Menu $menu */
 
-$this->title = 'Create Pedido Item';
+$this->title = 'Crear Pedido Item';
 //$this->params['breadcrumbs'][] = ['label' => 'Pedido Items', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 

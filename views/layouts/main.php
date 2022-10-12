@@ -85,14 +85,14 @@ if(!Yii::$app->user->isGuest){
                 ['label' => 'Grupos', 'url' => ['/grupo/index']]
             ):(""), 
             (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
-                ['label' => 'Pedido', 'url' => ['/pedido/index']]
+                ['label' => 'Pedidos', 'url' => ['/pedido/index']]
             ):(""),
          /*   (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
                 ['label' => 'Item Pedido', 'url' => ['/pedido-item/index']]
             ):(""),*/
-            (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
+          /*  (!Yii::$app->user->isGuest && ($tipo=='1' || $tipo=='0'))?(
                 ['label' => 'Pedido Cliente', 'url' => ['/pedido-item/menu']]
-            ):(""),
+            ):(""),*/
         //    ['label' => 'Contact', 'url' => ['/site/contact']],
         (!Yii::$app->user->isGuest)?(                
             ['label' => 'Perfil', 'url' => [$ruta, 'id' => $id]]

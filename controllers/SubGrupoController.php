@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\SubGrupo;
 use app\models\search\SubGrupoSearch;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -81,7 +82,8 @@ class SubGrupoController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                Yii::$app->session->setFlash('info', ' Sub-Grupo '.$model->nombre.' registrado exitosamente');
+                return $this->redirect(['sub-grupo/create']);
             }
         } else {
             $model->loadDefaultValues();

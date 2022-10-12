@@ -90,6 +90,7 @@ $provider = new ActiveDataProvider([
         ]); ?>
     </div>
     <?= Html::a('Imprimir', null, ["class" => "btn btn-secondary menuA", 'role' => "button", 'href' => 'javascript:imprSelec("seleccion")']) ?>
+    <?= Html::a('Nuevo pedido', ['/pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role' => "button", 'onclick' => Yii::$app->cache->set('restauranteId',Yii::$app->cache->get('restauranteProvicional'))]) ?>
 
 </div>
 <script type="text/javascript">

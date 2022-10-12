@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Restaurante;
 use app\models\search\RestauranteSearch;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -119,6 +120,7 @@ class RestauranteController extends Controller
                 }
             }
             if($model->save(false)){
+                Yii::$app->session->setFlash('info', 'Datos de perfil actualizados');
                 return $this->redirect(['update', 'id' => $model->id]);
             }
         }

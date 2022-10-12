@@ -147,10 +147,10 @@ class PedidoItemController extends Controller
             $pedidoItem->valor= 15000;
             $pedidoItem->save(false);*/
             //$this->menu();
-            Yii::$app->session->setFlash('exito', 'Pedido registrado exitosamente');
+            Yii::$app->session->setFlash('info', 'Pedido registrado exitosamente');
             return $this->actionMenu();
         } else {
-            Yii::$app->session->setFlash('error', 'El pedido no se pudo registrar');
+            Yii::$app->session->setFlash('info', 'El pedido no se pudo registrar');
             // return false;
         }
     }
@@ -179,6 +179,7 @@ class PedidoItemController extends Controller
 
     public function actionMenu()
     {
+
         if (isset($_GET["id"])) {
             Yii::$app->cache->set('restauranteId', $_GET["id"]);
             //echo '<script> alert("Primero debe selecionar algun item del menu para poder generar el pedido"); </script>';
@@ -233,13 +234,14 @@ class PedidoItemController extends Controller
                             $pedidoItem->save(false);
                         }
                     }
+
+                    Yii::$app->cache->set('restauranteProvicional', Yii::$app->cache->get('restauranteId'));
                     Yii::$app->cache->delete('restauranteId');
                     return $this->redirect(['pedido/view', 'id' => $pedido->id]);
                 } else {
                     Yii::$app->session->setFlash('error', 'Primero debe selecionar algun item del menu para poder generar el pedido');
                     //echo '<script> alert("Primero debe selecionar algun item del menu para poder generar el pedido"); </script>';
                 }
-                //echo '<script> console.log("holaaaaaaaaaaaaaaaaaaaa"); </script>';
             }
         } else {
             //   $menuFinal->loadDefaultValues();

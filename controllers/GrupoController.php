@@ -89,7 +89,9 @@ class GrupoController extends Controller
             if ($model->load($this->request->post()) ) {
                 $model->restaurante_id=$restaurante;
                 if($model->save()){
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    Yii::$app->session->setFlash('info', ' Grupo '.$model->nombre.' registrado exitosamente');
+                    return $this->redirect(['grupo/create']);
+                //    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         } else {
