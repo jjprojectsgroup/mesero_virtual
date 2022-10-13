@@ -44,7 +44,7 @@ $grupos = Grupo::find()->all();
             <table class="table table-sm table-striped">
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th style=" display:none; ">#</th>
                   <th style=" display:none; ">id.</th>
                   <th >Descripción</th>
                   <th>Cant.</th>
@@ -154,7 +154,7 @@ $grupos = Grupo::find()->all();
             valor += pedido[x].totalU + "-";
             var tr =
               '<tr>' +
-              '<td>' + j + '</td>' +
+              '<td style=" display:none; ">' + j + '</td>' +
               '<td>' + pedido[x].descripcion + '</td>' +
               '<td style=" display:none; ">' + pedido[x].id + '</td>' +
               '<td>' + pedido[x].cantidad + '</td>' +

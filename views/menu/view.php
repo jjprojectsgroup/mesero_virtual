@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;*/
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Yii::$app->user->identity->tipo == '1' ? Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) : '' ?>
+        <?= Yii::$app->user->identity->tipo == '1' ? Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) : '' ?>
         <?= Html::a('Menú', ['menu/index'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
         <!--     <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                         'class' => 'btn btn-danger',

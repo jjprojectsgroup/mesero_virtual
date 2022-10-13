@@ -89,7 +89,7 @@ class GrupoController extends Controller
             if ($model->load($this->request->post()) ) {
                 $model->restaurante_id=$restaurante;
                 if($model->save()){
-                    Yii::$app->session->setFlash('info', ' Grupo '.$model->nombre.' registrado exitosamente');
+                    Yii::$app->session->setFlash('success', ' Grupo '.$model->nombre.' registrado exitosamente');
                     return $this->redirect(['grupo/create']);
                 //    return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -115,6 +115,7 @@ class GrupoController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('info', ' Grupo '.$model->nombre.' actualizado exitosamente');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

@@ -83,8 +83,8 @@ $contadorItem = 0;
     <p></p>
     <?= Html::a('Menú', ['pedido-item/menu'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
     <?= Html::a('Pedir', ['pedido-item/facturar'], ["class" => "btn btn-success", 'role' => "button", 'onclick' => "guardarDatos()"]) ?>
-    <?= Html::a('Eliminar Pedido', ['pedido-item/menu'], ["class" => "btn btn-danger menuA", 'role' => "button", 'onclick' => "borrarDatos()"]) ?>
-    <?= Html::a('Facturar', ['pedido-item/facturar'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
+    <?= Html::a('Eliminar', ['pedido-item/menu'], ["class" => "btn btn-danger menuA", 'role' => "button", 'onclick' => "borrarDatos()"]) ?>
+    <?= Html::a('Ver Factura', ['pedido-item/facturar'], ["class" => "btn btn-primary menuA", 'role' => "button"]) ?>
 
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

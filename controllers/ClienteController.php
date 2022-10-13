@@ -86,6 +86,7 @@ class ClienteController extends Controller
                 $model->hora=date('H:i:s');
                 $model->saldo=0;
                 if($model->save()){
+                    Yii::$app->session->setFlash('success', 'Registro exitoso');
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }else{
@@ -112,6 +113,8 @@ class ClienteController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('info', 'Datos de perfil actualizados');
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

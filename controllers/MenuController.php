@@ -89,7 +89,7 @@ class MenuController extends Controller
                 $restaurante_id = Restaurante::findOne(['usuario_id' => Yii::$app->user->identity->id]);
                 $model->restaurante_id = $restaurante_id->id;
                 if ($model->save()) {
-Yii::$app->session->setFlash('info', 'Menu registrado exitosamente');
+                    Yii::$app->session->setFlash('success', ' Menu '.$model->nombre.' registrado exitosamente');
 
                     return $this->redirect(['menu/create']);
                     //return $this->actionCreate();
@@ -116,6 +116,7 @@ Yii::$app->session->setFlash('info', 'Menu registrado exitosamente');
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('info', ' Menu '.$model->nombre.' actualizado exitosamente');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

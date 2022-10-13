@@ -82,7 +82,7 @@ class SubGrupoController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                Yii::$app->session->setFlash('info', ' Sub-Grupo '.$model->nombre.' registrado exitosamente');
+                Yii::$app->session->setFlash('success', ' Subgrupo '.$model->nombre.' registrado exitosamente');
                 return $this->redirect(['sub-grupo/create']);
             }
         } else {
@@ -106,6 +106,7 @@ class SubGrupoController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('info', ' Subgrupo '.$model->nombre.' actualizado exitosamente');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

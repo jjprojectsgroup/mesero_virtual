@@ -85,6 +85,7 @@ class RestauranteController extends Controller
 
          if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', 'Registro exitoso');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
