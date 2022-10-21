@@ -36,6 +36,9 @@ $ciudades= [''=>'SELECCIONA TU CIUDAD','APARTADÓ'=>'APARTADÓ', 'ARMENIA'=>'ARM
    ],
    
 ]);?> 
+
+
+
     <div  class="container ">
     <div class="row">
         <div class="col-md-3 ">

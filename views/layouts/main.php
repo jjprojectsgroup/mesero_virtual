@@ -97,13 +97,17 @@ if(!Yii::$app->user->isGuest){
         (!Yii::$app->user->isGuest)?(                
             ['label' => 'Perfil', 'url' => [$ruta, 'id' => $id]]
             ):(""),
+            (!Yii::$app->user->isGuest)?(
+            ['label' => $usuario!=null?$usuario->nombre!=null?'Cerrar Sesion ('.$usuario->nombre.')':'Cerrar Sesion (' .Yii::$app->user->identity->email . ')':'Cerrar Sesion (ADMIN)',
+            'url' => 'javascript:clicModal();']
+            ):(""),
         Yii::$app->user->isGuest
             ? ['label' => 'Login', 'url' => ['/site/login']]
             : '<li class="nav-item">'
                 . Html::beginForm(['/site/logout'])
                 . Html::submitButton(
                     $usuario!=null?$usuario->nombre!=null?'Cerrar Sesion ('.$usuario->nombre.')':'Cerrar Sesion (' .Yii::$app->user->identity->email . ')':'Cerrar Sesion (ADMIN)',
-                    ['class' => 'nav-link btn btn-link logout']
+                    ['class' => 'nav-link btn btn-link logout', 'id'=>'logout','style'=>'display:none']
                 )
                 . Html::endForm()
                 . '</li>',
@@ -148,3 +152,64 @@ if(!Yii::$app->user->isGuest){
 </body>
 </html>
 <?php $this->endPage() ?>
+<script type="text/javascript">
+
+function clicModal(){
+
+    $('#btnModal').click();
+   
+
+
+//var alertaSesion = confirm("Estas seguro de cerrar sesion?");
+
+//if(alertaSesion){
+
+    //$('#logout').click();
+
+//}else{
+  //  window.location.href="index.html"
+//}
+ 
+}
+function clicLogout(){
+
+$('#logout').click();
+
+}
+</script>
+
+<!-- Latest minified bootstrap css -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<!-- Latest minified bootstrap js -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<!-- Button to trigger modal -->
+<label style="display:none" class="btn btn- btn-lg" id="btnModal" data-toggle="modal" data-target="#modalForm">
+    Open Contact Form
+</label>
+
+<!-- Modal -->
+<div class="modal fade" id="modalForm" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+          
+                <h4 class="modal-title" id="myModalLabel"><strong>Estas seguro de cerrar sesion?</strong></h4>
+            </div>
+            
+
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary submitBtn" onclick="clicLogout()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
